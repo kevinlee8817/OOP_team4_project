@@ -35,12 +35,27 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = "fruits") {
+            NavHost(navController = navController, startDestination = "home") {
+                composable("home") {
+
+                }
+                composable("treeStats") {
+
+                }
+                composable("goal") {
+
+                }
+                composable("setGoal") {
+
+                }
                 composable("fruits") {
                     PageFruits()
                 }
                 composable("fruitsStats") {
                     PageFruitsStats()
+                }
+                composable("store") {
+
                 }
             }
         }
@@ -72,7 +87,7 @@ fun PageSetGoal() {
 //이견우
 @Composable
 fun PageFruits() {
-    SetBackground()
+
 }
 
 @Composable
@@ -84,39 +99,4 @@ fun PageFruitsStats() {
 @Composable
 fun PageStore() {
 
-}
-
-@Composable
-fun SetBackground() {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = Color(0xFFEEFFDB) )
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BackPreview() {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = Color(0xFFEEFFDB) )
-    )
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun FramePreview(cardWidth: Float, ) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth(0.8f)
-            .padding(16.dp)
-            .fillMaxHeight(0.4f),
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFBCADA0)
-        )
-    ) {
-        Column() { }
-    }
 }
