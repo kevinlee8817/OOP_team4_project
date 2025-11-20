@@ -95,13 +95,13 @@ fun PageSetGoal() {
 //이견우
 @Composable
 fun PageFruits() {
-    SetBackground()
     Column(
         modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        SetBackground()
         FruitTree()
         OwnglyphText(
             text = "목표 현황",
