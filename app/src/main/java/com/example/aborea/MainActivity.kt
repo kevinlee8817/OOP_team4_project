@@ -12,6 +12,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
@@ -32,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -43,7 +46,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = "home") {
+            NavHost(navController = navController, startDestination = "fruits") {
                 composable("home") {
 
                 }
@@ -57,10 +60,10 @@ class MainActivity : ComponentActivity() {
 
                 }
                 composable("fruits") {
-                    PageFruits()
+                    PageFruits(navController)
                 }
                 composable("fruitsStats") {
-                    PageFruitsStats()
+                    PageFruitsStats(navController)
                 }
                 composable("store") {
 
@@ -94,7 +97,7 @@ fun PageSetGoal() {
 
 //이견우
 @Composable
-fun PageFruits() {
+fun PageFruits(navController: NavController) {
     SetBackground()
     Column(
         modifier = Modifier
@@ -116,13 +119,14 @@ fun PageFruits() {
             0,
             10
         )
-        NavBar()
+        NavBar(navController)
     }
 }
 
 @Composable
-fun PageFruitsStats() {
-
+fun PageFruitsStats(navController: NavController) {
+    SetBackground()
+    NavBar(navController)
 }
 
 //김동현
@@ -168,7 +172,7 @@ fun BasicFrame(cardWidth: Float, cardHeight: Float, offSetX: Int, offSetY: Int) 
 }
 
 @Composable
-fun NavBar() {
+fun NavBar(navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -179,7 +183,26 @@ fun NavBar() {
             containerColor = Color(0xFFBCADA0)
         )
     ) {
-
+       Column(
+           modifier = Modifier
+               .fillMaxSize(),
+           verticalArrangement = Arrangement.Top
+       ) {
+           Row {
+               Button(onClick = {navController.navigate("home")}) {
+                   Text("홈")
+               }
+               Button(onClick = {navController.navigate("goal")}) {
+                   Text("목표")
+               }
+               Button(onClick = {navController.navigate("fruits")}) {
+                   Text("통계")
+               }
+               Button(onClick = {navController.navigate("store")}) {
+                   Text("상점")
+               }
+           }
+       }
     }
 }
 
