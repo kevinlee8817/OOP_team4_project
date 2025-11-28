@@ -2,7 +2,7 @@ package com.example.aborea.pages.statistics.compose
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
-import com.example.aborea.common.*
+import com.example.aborea.common.OwnglyphText
 
 @Composable
 fun BarWithText(text: String, color: Long) {
