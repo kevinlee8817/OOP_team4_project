@@ -1,44 +1,17 @@
 package com.example.aborea
 
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.foundation.layout.offset
-import androidx.compose.ui.text.font.Font
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.aborea.ui.theme.AboreaTheme
+import com.example.aborea.common.*
+import com.example.aborea.pages.goal.*
+import com.example.aborea.pages.home.*
+import com.example.aborea.pages.statistics.*
+import com.example.aborea.pages.store.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,173 +19,32 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = "fruits") {
-                composable("home") {
-
+            NavHost(navController = navController, startDestination = "home1") {
+                composable("home1") {
+                    Home1(navController)
                 }
-                composable("treeStats") {
-
+                composable("home2") {
+                    Home2(navController)
                 }
-                composable("goal") {
-
+                composable("goal1") {
+                    Goal1(navController)
                 }
-                composable("setGoal") {
-
+                composable("goal2") {
+                    Goal2(navController)
                 }
-                composable("fruits") {
-                    PageFruits(navController)
+                composable("statistics1") {
+                    Statistics1(navController)
                 }
-                composable("fruitsStats") {
-                    PageFruitsStats(navController)
+                composable("statistics2") {
+                    Statistics2(navController)
                 }
-                composable("store") {
-
+                composable("store1") {
+                    Store1(navController)
+                }
+                composable("store2") {
+                    Store2(navController)
                 }
             }
         }
     }
-}
-
-//김가은
-@Composable
-fun PageHome() {
-
-}
-
-@Composable
-fun PageTreeStats() {
-
-}
-
-//심현솔
-@Composable
-fun PageGoal() {
-
-}
-
-@Composable
-fun PageSetGoal() {
-
-}
-
-//이견우
-@Composable
-fun PageFruits(navController: NavController) {
-    SetBackground()
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        FruitTree()
-        OwnglyphText(
-            text = "목표 현황",
-            size = 40,
-            offSetX = -100,
-            offSetY = 0,
-            color = 0xFF6A6A6A
-        )
-        BasicFrame(
-            0.90f,
-            0.5f,
-            0,
-            10
-        )
-        NavBar(navController)
-    }
-}
-
-@Composable
-fun PageFruitsStats(navController: NavController) {
-    SetBackground()
-    NavBar(navController)
-}
-
-//김동현
-@Composable
-fun PageStore() {
-
-}
-
-@Composable
-fun SetBackground() {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = Color(0xFFEEFFDB) )
-    )
-}
-
-@Composable
-fun OwnglyphText(text: String, size: Int, offSetX: Int, offSetY: Int, color: Long) {
-    Text(
-        modifier = Modifier
-            .offset(x = offSetX.dp, y = offSetY.dp),
-        text = text,
-        color = Color(color),
-        fontSize = size.sp,
-        fontFamily = FontFamily(Font(R.font.ownglyph))
-    )
-}
-
-@Composable
-fun BasicFrame(cardWidth: Float, cardHeight: Float, offSetX: Int, offSetY: Int) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth(cardWidth)
-            .fillMaxHeight(cardHeight)
-            .offset(x = offSetX.dp, y = offSetY.dp),
-        shape = RoundedCornerShape(32.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFBCADA0)
-        )
-    ) {
-
-    }
-}
-
-@Composable
-fun NavBar(navController: NavController) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(height = 100.dp)
-            .offset(x = 0.dp, y = 30.dp),
-        shape = RoundedCornerShape(32.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFBCADA0)
-        )
-    ) {
-       Column(
-           modifier = Modifier
-               .fillMaxSize(),
-           verticalArrangement = Arrangement.Top
-       ) {
-           Row {
-               Button(onClick = {navController.navigate("home")}) {
-                   Text("홈")
-               }
-               Button(onClick = {navController.navigate("goal")}) {
-                   Text("목표")
-               }
-               Button(onClick = {navController.navigate("fruits")}) {
-                   Text("통계")
-               }
-               Button(onClick = {navController.navigate("store")}) {
-                   Text("상점")
-               }
-           }
-       }
-    }
-}
-
-@Composable
-fun FruitTree() {
-    Image(
-        modifier = Modifier
-            .size(450.dp),
-        painter = painterResource(id = R.drawable.fruittree),
-        contentDescription = "fruitTree",
-        contentScale = ContentScale.Crop
-    )
 }
