@@ -39,20 +39,14 @@ fun GoalStats() {
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
+                    .fillMaxWidth()
+                    .offset(x = 40.dp, y = 10.dp),
+                horizontalArrangement = Arrangement.spacedBy(47.dp),
             ) {
-                OwnglyphText("1", 20, 0, 0, 0xFFF6F3EE)
-                OwnglyphText("2", 20, 0, 0, 0xFFF6F3EE)
-                OwnglyphText("3", 20, 0, 0, 0xFFF6F3EE)
-                OwnglyphText("4", 20, 0, 0, 0xFFF6F3EE)
-                OwnglyphText("5", 20, 0, 0, 0xFFF6F3EE)
+                for(i in 0..5)
+                    OwnglyphText("$i", 20, 0, 0, 0xFFF6F3EE)
             }
-            BarWithText("목표1", 0xFFEA6751)
-            BarWithText("목표2", 0xFF4B90C0)
-            BarWithText("목표3", 0xFFFECE54)
-            BarWithText("목표4", 0xFF9D6297)
+            BarWithText()
         }
     }
 }
