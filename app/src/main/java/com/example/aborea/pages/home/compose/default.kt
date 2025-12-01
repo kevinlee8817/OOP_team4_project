@@ -34,6 +34,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.aborea.R
 import com.example.aborea.common.*
 import com.example.aborea.pages.home.Home1
+import com.example.aborea.pages.home.Home2
 
 //통계 버튼
 @Composable
@@ -60,6 +61,30 @@ fun buttonStatistics(){
         }
     }
 }
+
+//타이머 stop버튼
+
+@Composable
+fun buttontimerstop(){
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(30.dp)
+    ){
+        Column(
+            modifier = Modifier
+                .align(Alignment.TopEnd),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Image(
+                modifier = Modifier.size(40.dp),
+                        painter = painterResource(id = R.drawable.btn_timerstop),
+                contentDescription = "timerstop"
+            )
+        }
+    }
+}
+
 //집중 시간 text
 @Composable
 fun focusTime(){
@@ -229,11 +254,16 @@ fun timerON(){
 
 //하단 바
 
-
-
 @Preview(showBackground = true)
 @Composable
 fun Home1Preview() {
     val navController = rememberNavController()
     Home1(navController = navController)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Home2Preview() {
+    val navController = rememberNavController()
+    Home2(navController = navController)
 }
