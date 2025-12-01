@@ -1,12 +1,63 @@
 package com.example.aborea.pages.home
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.aborea.common.*
 import com.example.aborea.pages.home.compose.*
+import kotlin.concurrent.timer
+import com.example.aborea.R
 
 @Composable
 fun Home2(navController: NavController) {
     SetBackground()
-    NavBar(navController)
+    Column(){
+        //timerstop 버튼
+        buttontimerstop()
+        //집중 시간 text
+        focusTime()
+        //나무
+        showTree()
+
+        Column(
+            modifier = Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceEvenly
+        ){
+            //progress bar
+            progressBar()
+            //누적 집중 시간
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ){
+                OwnglyphText("00 : 17 : 24", 60, 0, 0, 0xFF6A6A6A)
+            }
+            //하단 바
+            NavBar(navController)
+        }
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun m2Preview() {
+    val navController = rememberNavController()
+    Home2(navController = navController)
 }
