@@ -1,0 +1,81 @@
+package com.example.aborea.pages.store
+
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+
+class StoreViewModel(application: Application) : AndroidViewModel(application) {
+
+    // 아까 만든 StoreStorage (저장소) 연결
+    private val storage = StoreStorage(application)
+
+    // [상태 1] 내 나무 포인트 (UI가 관찰함)
+    private val _myTreePoint = MutableStateFlow(storage.getMyPoint())
+    val myTreePoint = _myTreePoint.asStateFlow()
+
+    // [상태 2] 화면에 보여줄 아이템 리스트
+    private val _displayItems = MutableStateFlow<List<StoreItem>>(emptyList())
+    val displayItems = _displayItems.asStateFlow()
+
+    init {
+        // 뷰모델 시작할 때 데이터 불러오기
+        refreshData()
+    }
+
+    // 저장된 데이터 불러와서 리스트 갱신하기
+    private fun refreshData() {
+        val purchasedIds = storage.getPurchasedIds() // 산 것들 ID 가져오기
+
+        // 기본 리스트랑 비교해서 '산 것' 체크
+        val newList = defaultItemList.map { item ->
+            if (purchasedIds.contains(item.id.toString())) {
+                item.copy(isPurchased = true)
+            } else {
+                item
+            }
+        }
+        _displayItems.value = newList
+    }
+
+    // --- 기능 1: 아이템 구매 ---
+    fun buyItem(item: StoreItem) {
+        val currentPoint = _myTreePoint.value
+
+        // 포인트 충분하고 + 안 산 거면
+        if (currentPoint >= item.price && !item.isPurchased) {
+
+            // 1. 포인트 차감
+            val newPoint = currentPoint - item.price
+
+            // 2. 값 업데이트 & 저장
+            _myTreePoint.value = newPoint
+            storage.saveMyPoint(newPoint)
+            storage.addPurchasedId(item.id)
+
+            // 3. 리스트 새로고침 (회색 표시 위해)
+            refreshData()
+        }
+    }
+
+    // --- 기능 2: 공부 시간으로 포인트 벌기 (타이머에서 호출) ---
+    // 분(minute)을 넣으면 1시간당 1포인트로 환산
+    fun earnPointsByStudyTime(minutes: Int) {
+        val earnedPoint = minutes / 60
+
+        if (earnedPoint > 0) {
+            val newPoint = _myTreePoint.value + earnedPoint
+
+            _myTreePoint.value = newPoint
+            storage.saveMyPoint(newPoint)
+        }
+    }
+
+    // (테스트용) 100포인트 강제 추가
+    fun addTestPoint() {
+        val newPoint = _myTreePoint.value + 100
+        _myTreePoint.value = newPoint
+        storage.saveMyPoint(newPoint)
+    }
+}

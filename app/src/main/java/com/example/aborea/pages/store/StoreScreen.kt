@@ -30,26 +30,30 @@ import com.example.aborea.common.SetBackground
 import com.example.aborea.common.NavBar
 import com.example.aborea.common.OwnglyphText
 
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 // 폰트
 val customFont = FontFamily(Font(R.font.ownglyph))
 
 @Composable
 fun StoreScreen(
     navController: NavController,
-    currentBalance: Int = 400  // 일단 UI 상으로 확인하려고 만든 임시 잔고값
+    viewModel: StoreViewModel = viewModel()
 ) {
+    // [이름 변경됨] balance -> myTreePoint
+    val currentPoint by viewModel.myTreePoint.collectAsState()
+
+    // [이름 변경됨] storeItems -> displayItems
+    val items by viewModel.displayItems.collectAsState()
+
     var selectedItem by remember { mutableStateOf<StoreItem?>(null) }
 
-    // 화면 전환 로직
     if (selectedItem != null) {
-        // 상세 화면으로 이동
         StoreDetailScreen(
             item = selectedItem!!,
-            balance = currentBalance,
+            balance = currentPoint, // 여기도 이름 맞춰서 넣기
             onBackClick = { selectedItem = null },
-            onBuyClick = {
-                // 지금은 비워둠 (로직은 나중에)
-            }
+            onBuyClick = { viewModel.buyItem(selectedItem!!) }
         )
     } else {
 
@@ -80,7 +84,7 @@ fun StoreScreen(
                     )
 
                     OwnglyphText(
-                        text = "🌳 $currentBalance",
+                        text = "🌳 $currentPoint",
                         size = 24,
                         offSetX = 0,
                         offSetY = 0,
@@ -98,7 +102,8 @@ fun StoreScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         contentPadding = PaddingValues(bottom = 120.dp)
                     ) {
-                        items(StoreItemList) { item ->
+                        items(items.size) { index ->
+                            val item = items[index]
                             StoreItemCard(
                                 item = item,
                                 onClick = { selectedItem = item }
@@ -194,6 +199,9 @@ fun StoreItemCard(
     }
 }
 
+
+
+// 미리보기
 @Preview(showBackground = true)
 @Composable
 fun StoreScreenPreview() {

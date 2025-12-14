@@ -7,11 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.aborea.common.*
 import com.example.aborea.pages.goal.*
 import com.example.aborea.pages.home.*
 import com.example.aborea.pages.statistics.*
-import com.example.aborea.pages.store.*
+import com.example.aborea.pages.store.StoreScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
