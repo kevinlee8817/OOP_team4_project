@@ -1,12 +1,284 @@
 package com.example.aborea.pages.goal
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.aborea.common.*
-import com.example.aborea.pages.goal.compose.*
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+// ⭐ FlowRow를 위한 올바른 import
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 
+
+// ==========================================================
+// 1. 데이터 모델 및 전역 상태 정의 (Goal2.kt 파일과 동일하거나 공유되어야 함)
+// Goal2.kt에 정의된 GoalItem과 GoalState를 사용한다고 가정합니다.
+
+data class SelectionItem(
+    val id: Int,
+    val label: String,
+    val emoji: String? = null,
+    val color: Color = Color.LightGray
+)
+
+// 2. 재사용 가능한 카드 버튼 컴포넌트
+@Composable
+fun SelectButton(
+    item: SelectionItem,
+    isSelected: Boolean,
+    onItemClick: (Int) -> Unit
+) {
+    val backgroundColor = if (isSelected) Color(0xFFE8F5E9) else Color(0xFFF8F8F8)
+    val borderColor = Color(0xFF8BC34A)
+
+    Card(
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = backgroundColor
+        ),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(4.dp)
+            .clickable { onItemClick(item.id) }
+            .then(
+                if (isSelected) Modifier.border(1.dp, borderColor, RoundedCornerShape(8.dp))
+                else Modifier
+            )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            item.emoji?.let {
+                Text(
+                    text = it,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(end = 6.dp)
+                )
+            }
+            Text(
+                text = item.label,
+                color = Color.Black,
+                fontSize = 14.sp
+            )
+        }
+    }
+}
+
+
+// 3. 메인 화면 컴포넌트 (NewGoalScreen)
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun NewGoalScreen(navController: NavController) {
+
+    // ⭐ 목표 이름 상태 변수
+    var goalName by remember { mutableStateOf("") }
+    var selectedCategoryId by remember { mutableStateOf(-1) }
+    var selectedTreeId by remember { mutableStateOf(-1) }
+
+    // 데이터 정의 (GoalItem 생성에 사용)
+    val categories = remember {
+        listOf(
+            SelectionItem(1, "공부", "📚"),
+            SelectionItem(2, "운동", "💪"),
+            SelectionItem(3, "업무", "💼"),
+            SelectionItem(4, "취미", "💜")
+        )
+    }
+
+    val treeTypes = remember {
+        listOf(
+            SelectionItem(11, "벚꽃나무", "🌸"),
+            SelectionItem(12, "단풍나무", "🍂"),
+            SelectionItem(13, "사과나무", "🍎"),
+            SelectionItem(14, "소나무", "🌲"),
+            SelectionItem(15, "편백나무", "🌳"),
+            SelectionItem(16, "이끼나무", "🍄"),
+            SelectionItem(17, "별나무", "⭐"),
+            SelectionItem(18, "달나무", "🌙")
+        )
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 10.dp)
+            .background(Color.White, RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // 1. 헤더
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(modifier = Modifier.width(24.dp))
+            Text("새로운 목표", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+
+            Text(
+                text = "X",
+                fontSize = 24.sp,
+                color = Color.Black,
+                fontWeight = FontWeight.Light,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .clickable { navController.popBackStack() }
+                    .padding(8.dp)
+            )
+        }
+
+        // 2. 목표 이름 입력
+        Text(
+            "목표 이름",
+            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+            fontWeight = FontWeight.SemiBold
+        )
+        OutlinedTextField(
+            value = goalName,
+            onValueChange = { goalName = it },
+            placeholder = { Text("예: 객프 공부", color = Color.Gray) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            shape = RoundedCornerShape(8.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.LightGray,
+                unfocusedBorderColor = Color.LightGray,
+                unfocusedContainerColor = Color(0xFFF0F0F0),
+                focusedContainerColor = Color.White
+            )
+        )
+
+        // 3. 카테고리 선택 (2열)
+        Text(
+            "카테고리 선택",
+            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+            fontWeight = FontWeight.SemiBold
+        )
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 20.dp),
+            horizontalArrangement = Arrangement.Start,
+            maxItemsInEachRow = 2
+        ) {
+            categories.forEach { item ->
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(58.dp)
+                ) {
+                    SelectButton(
+                        item = item,
+                        isSelected = item.id == selectedCategoryId,
+                        onItemClick = { newId -> selectedCategoryId = newId }
+                    )
+                }
+            }
+        }
+
+        // 4. 나무 종류 선택 (2열)
+        Text(
+            "나무 종류 선택",
+            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+            fontWeight = FontWeight.SemiBold
+        )
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 30.dp),
+            horizontalArrangement = Arrangement.Start,
+            maxItemsInEachRow = 2
+        ) {
+            treeTypes.forEach { item ->
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(58.dp)
+                ) {
+                    SelectButton(
+                        item = item,
+                        isSelected = item.id == selectedTreeId,
+                        onItemClick = { newId -> selectedTreeId = newId }
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        // 5. 목표 생성 버튼
+        Button(
+            onClick = {
+                if (goalName.isBlank() || selectedCategoryId == -1 || selectedTreeId == -1) {
+                    println("오류: 모든 항목을 선택/입력해야 합니다.")
+                    return@Button
+                }
+
+                // 목표 데이터 생성 및 GoalState에 추가
+                val newGoal = GoalItem(
+                    id = GoalState.goalList.size + 1,
+                    categoryEmoji = categories.find { it.id == selectedCategoryId }?.emoji ?: "❓",
+                    categoryLabel = categories.find { it.id == selectedCategoryId }?.label ?: "기타",
+                    name = goalName,
+                    treeEmoji = treeTypes.find { it.id == selectedTreeId }?.emoji ?: "❓",
+                    treeName = treeTypes.find { it.id == selectedTreeId }?.label ?: "기타나무",
+                    isActive = GoalState.goalList.isEmpty()
+                )
+
+                GoalState.goalList.add(newGoal)
+
+                // Goal2 (목표 목록/관리 페이지)로 이동
+                navController.navigate("goal2") {
+                    popUpTo("goal2") { inclusive = true }
+                    launchSingleTop = true
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .padding(bottom = 1.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8BC34A)),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Text("목표 생성", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
+// 4. 메인 Entry Point (Goal1 함수)
 @Composable
 fun Goal1(navController: NavController) {
-    SetBackground()
-    NavBar(navController)
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        NewGoalScreen(navController)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Goal1Preview() {
+    Goal1(rememberNavController())
 }
