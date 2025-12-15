@@ -11,6 +11,7 @@ import com.example.aborea.common.*
 import com.example.aborea.pages.goal.*
 import com.example.aborea.pages.home.*
 import com.example.aborea.pages.statistics.*
+import com.example.aborea.pages.statistics.compose.Fruits
 import com.example.aborea.pages.store.*
 
 class MainActivity : ComponentActivity() {
@@ -19,6 +20,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
+            val status = Fruits()
             NavHost(navController = navController, startDestination = "home1") {
                 composable("home1") {
                     Home1(navController)
@@ -33,7 +35,7 @@ class MainActivity : ComponentActivity() {
                     Goal2(navController)
                 }
                 composable("statistics1") {
-                    Statistics1(navController)
+                    Statistics1(navController, status)
                 }
                 composable("statistics2") {
                     Statistics2(navController)

@@ -16,6 +16,7 @@ import com.example.aborea.common.NavBar
 import com.example.aborea.common.OwnglyphText
 import com.example.aborea.common.SetBackground
 import com.example.aborea.pages.statistics.compose.FruitTree
+import com.example.aborea.pages.statistics.compose.Fruits
 import com.example.aborea.pages.statistics.compose.GoalStats
 import com.example.aborea.pages.statistics.compose.SubNavBar
 
