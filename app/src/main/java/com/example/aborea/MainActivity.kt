@@ -39,11 +39,16 @@ class MainActivity : ComponentActivity() {
                     Statistics2(navController)
                 }
                 composable("store1") {
-                    Store1(navController)
+                    StoreScreen(navController)
                 }
+                /*
+                store1 (파일명 StoreScreen) 에서 바로 store2 = 상세화면(StoreDetailScreen)으로
+                넘어가는 구조라 MainActivity 에서 연결하지 않고 주석처리했습니다
+
                 composable("store2") {
-                    Store2(navController)
-                }
+                    StoreDetailScreen()
+                }       */
+
             }
         }
     }
