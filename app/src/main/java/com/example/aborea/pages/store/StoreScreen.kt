@@ -38,16 +38,20 @@ val customFont = FontFamily(Font(R.font.ownglyph))
 @Composable
 fun StoreScreen(
     navController: NavController,
-    viewModel: StoreViewModel = viewModel()
+    viewModel: StoreViewModel = viewModel()     // 뷰모델 연결
 ) {
-    // [이름 변경됨] balance -> myTreePoint
+    // 뷰모델 데이터 실시간 업데이트
     val currentPoint by viewModel.myTreePoint.collectAsState()
-
-    // [이름 변경됨] storeItems -> displayItems
     val items by viewModel.displayItems.collectAsState()
 
+    // 클릭된 아이템을 저장하는 상태 변수 (null이면 목록 화면, 있으면 상세 화면)
     var selectedItem by remember { mutableStateOf<StoreItem?>(null) }
 
+
+
+
+
+    // 선택된 아이템 있으면 StoreDetailScreen 으로 넘어감
     if (selectedItem != null) {
         StoreDetailScreen(
             item = selectedItem!!,
@@ -55,7 +59,12 @@ fun StoreScreen(
             onBackClick = { selectedItem = null },
             onBuyClick = { viewModel.buyItem(selectedItem!!) }
         )
-    } else {
+    }
+
+
+
+
+    else {
 
         SetBackground()
         Box(modifier = Modifier.fillMaxSize()) {
@@ -121,6 +130,12 @@ fun StoreScreen(
     }
 }
 
+
+
+
+
+//----------------------------------------------------------------------------
+
 // 개별 상품 카드
 @Composable
 fun StoreItemCard(
@@ -184,7 +199,7 @@ fun StoreItemCard(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color.Gray.copy(alpha = 0.5f)),
+                        .background(Color.Gray.copy(alpha = 0.5f)), // 회색으로 비활성화
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -200,6 +215,7 @@ fun StoreItemCard(
 }
 
 
+//----------------------------------------------------------------------------
 
 // 미리보기
 @Preview(showBackground = true)

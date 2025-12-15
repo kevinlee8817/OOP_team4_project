@@ -24,9 +24,19 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
         refreshData()
     }
 
+
+
+
+
+
+
+
+
+
     // 저장된 데이터 불러와서 리스트 갱신하기
     private fun refreshData() {
-        val purchasedIds = storage.getPurchasedIds() // 산 것들 ID 가져오기
+        val purchasedIds = storage.getPurchasedIds()
+        // 이미 구매한 품목들 id 가져오기
 
         // 기본 리스트랑 비교해서 '산 것' 체크
         val newList = defaultItemList.map { item ->
@@ -39,29 +49,42 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
         _displayItems.value = newList
     }
 
-    // --- 기능 1: 아이템 구매 ---
+
+
+
+
+
+
+    // 아이템 구매 기능 함수
     fun buyItem(item: StoreItem) {
         val currentPoint = _myTreePoint.value
 
-        // 포인트 충분하고 + 안 산 거면
+        // 구매 가능 조건 ( 포인트 충분 && 안산거 )
         if (currentPoint >= item.price && !item.isPurchased) {
 
-            // 1. 포인트 차감
+            // 포인트 차감
             val newPoint = currentPoint - item.price
 
-            // 2. 값 업데이트 & 저장
+            // 값 업데이트 & 저장
             _myTreePoint.value = newPoint
             storage.saveMyPoint(newPoint)
             storage.addPurchasedId(item.id)
 
-            // 3. 리스트 새로고침 (회색 표시 위해)
+            // 리스트 새로고침 (회색 표시 위해)
             refreshData()
         }
     }
 
-    // --- 기능 2: 공부 시간으로 포인트 벌기 (타이머에서 호출) ---
+
+
+
+// 이건 나중에 받아서 넣을 것들
+
+    // 공부 시간으로 포인트 벌기 (타이머에서 호출) ---
     // 분(minute)을 넣으면 1시간당 1포인트로 환산
+
     fun earnPointsByStudyTime(minutes: Int) {
+
         val earnedPoint = minutes / 60
 
         if (earnedPoint > 0) {

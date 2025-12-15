@@ -24,15 +24,24 @@ import com.example.aborea.common.SetBackground
 // 폰트 설정
 val detailFont = FontFamily(Font(R.font.ownglyph))
 
+
+
+
+
+
+
 @Composable
 fun StoreDetailScreen(
     item: StoreItem,
     balance: Int,
     onBackClick: () -> Unit,
-    // 나중에 기능 구현할 때 여기에 로직 넣으면 됨
     onBuyClick: () -> Unit
 ) {
-    // 내 잔고가 가격보다 많으면 구매 가능 버튼 활성화
+
+
+
+
+    // 내 잔고가 가격보다 많으면 구매 가능 버튼 활성화 -> 구매 가능 여부를 여기서 확인
     val canAfford = balance >= item.price
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -46,6 +55,9 @@ fun StoreDetailScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+
+
+
             // 상단 바
             Row(
                 modifier = Modifier
@@ -54,6 +66,9 @@ fun StoreDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
+
+                // 돌아가기 버튼 ( StoreScreen 으로 돌아가짐 )
                 Text(
                     text = "⬅ 돌아가기",
                     fontSize = 24.sp,
@@ -62,6 +77,8 @@ fun StoreDetailScreen(
                     modifier = Modifier.clickable { onBackClick() }
                 )
 
+
+                // 잔고 보여주는 텍스트
                 Text(
                     text = "🌳 $balance",
                     fontSize = 24.sp,
@@ -71,6 +88,12 @@ fun StoreDetailScreen(
             }
 
             Spacer(modifier = Modifier.height(40.dp))
+
+
+
+
+
+
 
             // 이미지 영역
             Box(
@@ -103,27 +126,35 @@ fun StoreDetailScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // 구매 버튼
-            Button(
-                onClick = {
-                    onBuyClick()
 
-                    // 버튼 누르자마자 StoreScreen으로 복귀
-                    onBackClick()
+
+
+
+
+
+            // 구매 버튼 관련
+            Button(
+
+                // 클릭하면
+                onClick = {
+                    onBuyClick() // 구매하고
+                    onBackClick() // 바로 StoreScreen 으로 복귀
                 },
+
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFA1887F),
                     disabledContainerColor = Color.Gray
                 ),
+
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp),
 
-                // 돈 없으면 버튼 못 누르게 막기
+                // 돈 없으면 버튼 비활성화 처리
                 enabled = canAfford
             ) {
-                Text(
+                Text(    // 구매 버튼에 뜨는 텍스트 결정 ( 구매 & 잔액 부족 )
                     text = if (canAfford) "구 매" else "잔액 부족",
                     fontSize = 30.sp,
                     fontFamily = detailFont,
