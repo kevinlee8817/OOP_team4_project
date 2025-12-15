@@ -55,7 +55,10 @@ val defaultItemList = listOf(
 
 
 // 데이터 저장소 ( 영구 저장 및 관리 기능 )
-// 안드로이드 SharedPreferences 사용
+/** 안드로이드 SharedPreferences 사용
+ * 저장해야 할 데이터의 형태가 '포인트, 구매 목록' 같이 단순한 형태라
+ * 가장 가벼운 SHaredPreferences를 사용했습니다.
+ */
 
 //-------------------------------------------------------------------------------------
 class StoreStorage(context: Context) {
@@ -72,7 +75,7 @@ class StoreStorage(context: Context) {
 
     // 내 포인트 가져오기
     fun getMyPoint(): Int {
-        val savedPoint = prefs.getInt("tree_point", 1000)
+        val savedPoint = prefs.getInt("tree_point", 1000) // 일단 확인용으로 기본값 1000 설정
         return savedPoint
     }
 

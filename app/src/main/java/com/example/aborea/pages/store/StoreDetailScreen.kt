@@ -25,9 +25,17 @@ import com.example.aborea.common.SetBackground
 val detailFont = FontFamily(Font(R.font.ownglyph))
 
 
-
-
-
+/** StoreDetailScreen 은 view 역할만
+ * StoreDetailScreen 이 가져야 하는 기능 :
+ * 상품 확대된 화면 보여주기, (잔액에 따른) 구매 가능 여부 판단하기,
+ * 원래 화면 ( StoreScreen ) 으로 돌아가기,
+ * 구매하기 ( 클릭 시 onBuyClick 호출 ) 뿐
+ * 스토어 기능 특성상 데이터 ( 잔고, 상품 보유 여부 ) 가 변하는데,
+ * 이걸 페이지 두 개에서 동시에 관리하기 힘들 것 같아서
+ * 차라리 'StoreDetailScreen' 은 순수하게 '화면' 역할만 하도록 하고,
+ * 나머지 모든 관리는 StoreScreen 쪽에서 하도록 했습니다.
+ * ( StoreDetailScreen 은 라우팅에서도 뺐습니다 )
+ */
 
 
 @Composable
@@ -153,7 +161,13 @@ fun StoreDetailScreen(
 
                 // 돈 없으면 버튼 비활성화 처리
                 enabled = canAfford
-            ) {
+            )
+
+
+
+
+
+            {
                 Text(    // 구매 버튼에 뜨는 텍스트 결정 ( 구매 & 잔액 부족 )
                     text = if (canAfford) "구 매" else "잔액 부족",
                     fontSize = 30.sp,

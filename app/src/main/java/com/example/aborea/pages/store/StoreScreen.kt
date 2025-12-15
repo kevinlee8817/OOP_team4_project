@@ -31,6 +31,7 @@ import com.example.aborea.common.NavBar
 import com.example.aborea.common.OwnglyphText
 
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.activity.compose.BackHandler
 
 // 폰트
 val customFont = FontFamily(Font(R.font.ownglyph))
@@ -40,6 +41,14 @@ fun StoreScreen(
     navController: NavController,
     viewModel: StoreViewModel = viewModel()     // 뷰모델 연결
 ) {
+
+
+
+
+
+
+
+
     // 뷰모델 데이터 실시간 업데이트
     val currentPoint by viewModel.myTreePoint.collectAsState()
     val items by viewModel.displayItems.collectAsState()
@@ -47,12 +56,31 @@ fun StoreScreen(
     // 클릭된 아이템을 저장하는 상태 변수 (null이면 목록 화면, 있으면 상세 화면)
     var selectedItem by remember { mutableStateOf<StoreItem?>(null) }
 
-
-
-
+    /** if - else 로직으로 처리
+     * 어차피 상품은 선택됐다 / 안됐다 둘 뿐이라서,
+     * if - else 문으로 로직 구성하는 게
+     * 좀 더 단순하고 직관적일 것 같아서 그렇게 했습니다.
+     *
+     * 선택(터치)된 상품 ->
+     * StoreDetailScreen 으로 넘어감
+     *
+     * else 부분 ->
+     * '일반적인 스토어 화면'
+     *
+     * 처음부터 내비게이션 없이 if - else 문으로 구조 짜다 보니,
+     * StoreDetailScreen 에서 안드로이드 시스템 백버튼 누르면
+     * 앱이 꺼지는 문제가 생길 수도 있어서
+     * ( OS 입장에선 페이지 하나에만 머물러 있어서 그런 것 같음 )
+     * 어쩔 수 없이 백핸들러 사용해서 처리했습니다.
+     */
 
     // 선택된 아이템 있으면 StoreDetailScreen 으로 넘어감
     if (selectedItem != null) {
+
+        BackHandler {
+            selectedItem = null
+        }
+
         StoreDetailScreen(
             item = selectedItem!!,
             balance = currentPoint, // 여기도 이름 맞춰서 넣기
@@ -63,6 +91,11 @@ fun StoreScreen(
 
 
 
+
+
+
+
+    // 여기가 일반적인 스토어 화면 ( else 로 처리 )
 
     else {
 
@@ -103,6 +136,13 @@ fun StoreScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
+
+
+
+
+
+
+
                 // 아이템 리스트
                 Box(modifier = Modifier.weight(1f)) {
                     LazyVerticalGrid(
@@ -121,6 +161,12 @@ fun StoreScreen(
                     }
                 }
             }
+
+
+
+
+
+
 
             // 네비게이션 바
             Box(modifier = Modifier.align(Alignment.BottomCenter)) {

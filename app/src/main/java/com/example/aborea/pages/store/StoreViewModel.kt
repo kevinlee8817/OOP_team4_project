@@ -6,16 +6,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+
+
+// ViewModel 사용
+
 class StoreViewModel(application: Application) : AndroidViewModel(application) {
 
-    // 아까 만든 StoreStorage (저장소) 연결
+    // StoreStorage (저장소) 연결
     private val storage = StoreStorage(application)
 
-    // [상태 1] 내 나무 포인트 (UI가 관찰함)
+    // 내 나무 포인트
     private val _myTreePoint = MutableStateFlow(storage.getMyPoint())
     val myTreePoint = _myTreePoint.asStateFlow()
 
-    // [상태 2] 화면에 보여줄 아이템 리스트
+    // 화면에 보여줄 아이템 리스트
     private val _displayItems = MutableStateFlow<List<StoreItem>>(emptyList())
     val displayItems = _displayItems.asStateFlow()
 
@@ -23,9 +27,6 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
         // 뷰모델 시작할 때 데이터 불러오기
         refreshData()
     }
-
-
-
 
 
 
@@ -41,7 +42,7 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
         // 기본 리스트랑 비교해서 '산 것' 체크
         val newList = defaultItemList.map { item ->
             if (purchasedIds.contains(item.id.toString())) {
-                item.copy(isPurchased = true)
+                item.copy(isPurchased = true) // 불변 객체 복사
             } else {
                 item
             }
@@ -59,7 +60,7 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
     fun buyItem(item: StoreItem) {
         val currentPoint = _myTreePoint.value
 
-        // 구매 가능 조건 ( 포인트 충분 && 안산거 )
+        // 구매 가능 조건 ( 포인트 충분 && 안 산거 )
         if (currentPoint >= item.price && !item.isPurchased) {
 
             // 포인트 차감
@@ -80,10 +81,8 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
 
 // 이건 나중에 받아서 넣을 것들
 
-    // 공부 시간으로 포인트 벌기 (타이머에서 호출) ---
-    // 분(minute)을 넣으면 1시간당 1포인트로 환산
 
-    fun earnPointsByStudyTime(minutes: Int) {
+    fun TimeToTreePoint(minutes: Int) {
 
         val earnedPoint = minutes / 60
 
@@ -95,10 +94,8 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // (테스트용) 100포인트 강제 추가
-    fun addTestPoint() {
-        val newPoint = _myTreePoint.value + 100
-        _myTreePoint.value = newPoint
-        storage.saveMyPoint(newPoint)
-    }
+
+    // '열매' 리스트 받아서 그걸로도 결제할 수 있는 구조 만들기
+
+
 }
