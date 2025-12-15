@@ -20,7 +20,7 @@ import com.example.aborea.pages.statistics.compose.GoalStats
 import com.example.aborea.pages.statistics.compose.SubNavBar
 
 @Composable
-fun Statistics1(navController: NavController) {
+fun Statistics1(navController: NavController, status: Fruits) {
     SetBackground()
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -38,7 +38,7 @@ fun Statistics1(navController: NavController) {
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        FruitTree()
+        FruitTree(status)
         OwnglyphText(
             text = "목표 현황",
             size = 40,
