@@ -1,4 +1,2 @@
-package com.example.aborea.pages.statistics.compose;
+package com.example.aborea.pages.statistics.compose
 
-public class Fruits {
-}
