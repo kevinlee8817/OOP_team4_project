@@ -55,7 +55,7 @@ import com.example.aborea.pages.store.TimeToTreePoint
 fun Home1(navController: NavController) {
     SetBackground()
 
-    val homeViewModel: HomeViewModel = viewModel()
+    val homeViewModel: HomeViewModel = viewModel() <-------- 이거
 
     Column(
         modifier = Modifier.fillMaxHeight(),
