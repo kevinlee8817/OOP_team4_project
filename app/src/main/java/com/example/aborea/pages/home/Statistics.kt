@@ -1,6 +1,5 @@
 package com.example.aborea.pages.home
 
-import android.graphics.Paint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,8 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.aborea.common.*
-import com.example.aborea.pages.home.compose.*
-import kotlin.concurrent.timer
+import com.example.aborea.pages.home.ui.*
 import com.example.aborea.R
 
 @Composable
