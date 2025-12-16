@@ -42,12 +42,12 @@ class MainActivity : ComponentActivity() {
                 composable("statistics2") {
                     Statistics2(navController, status)
                 }
-                composable("store1") {
-                    Store1(navController)
-                }
-                composable("store2") {
-                    Store2(navController)
-                }
+                //composable("store1") {
+                //    Store1(navController)
+                //}
+                //composable("store2") {
+                //    Store2(navController)
+                //}
             }
         }
     }

@@ -41,13 +41,7 @@ fun Statistics1(navController: NavController, status: MutableState<Fruits>) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         FruitTree(status.value)
-        OwnglyphText(
-            text = "목표 현황",
-            size = 40,
-            offSetX = -100,
-            offSetY = 0,
-            color = 0xFF6A6A6A
-        )
+        OwnglyphText(text = "목표 현황", size = 40, offSetX = -100, offSetY = 0, color = 0xFF6A6A6A)
         GoalStats(status.value)
         NavBar(navController)
     }
