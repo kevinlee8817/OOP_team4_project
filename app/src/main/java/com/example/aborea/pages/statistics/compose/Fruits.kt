@@ -1,13 +1,7 @@
 package com.example.aborea.pages.statistics.compose
 
-import android.health.connect.datatypes.units.Percentage
-import androidx.compose.foundation.Canvas
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.foundation.layout.size
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Canvas
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 
 class Fruits {
     //변수 정의 및 초기화
@@ -15,6 +9,7 @@ class Fruits {
     val fruitContainer = mutableStateListOf<Int>()
     val fruitNum = mutableStateListOf<Int>()
     val fruitMap = mapOf(0 to "redfruit", 1 to "bluefruit", 2 to "yellowfruit", 3 to "purplefruit")
+    val timeList = mutableStateListOf<Int>()
     val percentage = mutableStateListOf<Float>()
     val progress = mutableStateListOf<Float>()
 
@@ -41,28 +36,44 @@ class Fruits {
             } else {  }
         }
     }
-    fun getProgress(timeList: ArrayList<Int>) {
+    fun getProgress() {
         for(i in 0 until 4) {
             if(timeList[i] <= 18000){
-                progress[i] = (timeList[i] / 18000).toFloat()
+                progress[i] = timeList[i] / 18000f
             } else {
                 progress[i] = 1f
             }
         }
     }
-    //클릭하면 수확해주는 기능
+    //클릭하면 수확해주는 기능, 시간차감/fruitNum차감 추가해야함(->인자로 시간 리스트도 받아야 함)
     fun harvest(i: Int) {
         when(fruitForHarvest[i]) {
-            "redfruit" -> fruitContainer[0] += 1
-            "bluefruit" -> fruitContainer[1] += 1
-            "yellowfruit" -> fruitContainer[2] += 1
-            "purplefruit" -> fruitContainer[3] += 1
+            "redfruit" -> {
+                fruitContainer[0] += 1
+                fruitNum[0] -= 1
+                timeList[0] -= 3600
+            }
+            "bluefruit" -> {
+                fruitContainer[1] += 1
+                fruitNum[1] -= 1
+                timeList[1] -= 3600
+            }
+            "yellowfruit" -> {
+                fruitContainer[2] += 1
+                fruitNum[2] -= 1
+                timeList[2] -= 3600
+            }
+            "purplefruit" -> {
+                fruitContainer[3] += 1
+                fruitNum[3] -= 1
+                timeList[3] -= 3600
+            }
             else -> { }
         }
         fruitForHarvest[i] = "empty"
     }
     //수확 가능 리스트에 열매 할당
-    fun getFruits(timeList: ArrayList<Int>) {
+    fun getFruits() {
         var cnt = 0
         for(i in timeList) {
             when {
@@ -71,7 +82,8 @@ class Fruits {
                     var idx = 0
                     for(j in fruitForHarvest) {
                         if(j == "empty") {
-                            fruitForHarvest[idx] = fruitMap[idx] ?: "empty"
+                            fruitForHarvest[idx] = fruitMap[cnt] ?: "empty"
+                            cnt += 1
                             break
                         } else {
                             idx += 1
@@ -84,7 +96,8 @@ class Fruits {
                     var idx = 0
                     for(j in fruitForHarvest) {
                         if(j == "empty") {
-                            fruitForHarvest[idx] = fruitMap[idx] ?: "empty"
+                            fruitForHarvest[idx] = fruitMap[cnt] ?: "empty"
+                            cnt += 1
                             break
                         } else {
                             idx += 1
@@ -97,7 +110,8 @@ class Fruits {
                     var idx = 0
                     for(j in fruitForHarvest) {
                         if(j == "empty") {
-                            fruitForHarvest[idx] = fruitMap[idx] ?: "empty"
+                            fruitForHarvest[idx] = fruitMap[cnt] ?: "empty"
+                            cnt += 1
                             break
                         } else {
                             idx += 1
@@ -110,7 +124,8 @@ class Fruits {
                     var idx = 0
                     for(j in fruitForHarvest) {
                         if(j == "empty") {
-                            fruitForHarvest[idx] = fruitMap[idx] ?: "empty"
+                            fruitForHarvest[idx] = fruitMap[cnt] ?: "empty"
+                            cnt += 1
                             break
                         } else {
                             idx += 1
@@ -123,7 +138,8 @@ class Fruits {
                     var idx = 0
                     for(j in fruitForHarvest) {
                         if(j == "empty") {
-                            fruitForHarvest[idx] = fruitMap[idx] ?: "empty"
+                            fruitForHarvest[idx] = fruitMap[cnt] ?: "empty"
+                            cnt += 1
                             break
                         } else {
                             idx += 1
@@ -131,7 +147,7 @@ class Fruits {
                         }
                     }
                 }
-                else -> {  }
+                else -> cnt += 1
             }
         }
     }

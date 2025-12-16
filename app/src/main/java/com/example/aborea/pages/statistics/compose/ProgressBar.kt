@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.VerticalDivider
@@ -30,7 +29,7 @@ fun ProgressBar(status: Fruits, color: Long, index: Int) {
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth(status.percentage[index])
+                .fillMaxWidth(status.progress[index])
                 .fillMaxHeight()
                 .clip(RoundedCornerShape(10.dp))
                 .background(
