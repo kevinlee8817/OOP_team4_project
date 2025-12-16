@@ -40,16 +40,65 @@ object GoalState {
 }
 // ==========================================================
 
-// 임시 목표 카드 컴포넌트
+// 현재 활성 목표 카드
 @Composable
-fun GoalCard(goal: GoalItem) {
+fun ActiveGoalCard(goal: GoalItem, onDeactivate: () -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E9)), // 연두색 배경
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
-            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
+            .border(1.dp, Color(0xFF8BC34A), RoundedCornerShape(8.dp)) // 초록색 테두리
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            // "현재 활성 목표" 타이틀
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("ⓒ", color = Color(0xFF8BC34A), fontSize = 16.sp)
+                Spacer(Modifier.width(4.dp))
+                Text("현재 활성 목표", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            }
+            Spacer(Modifier.height(8.dp))
+
+            // 목표 상세 정보 및 해제 버튼
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(goal.name, fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
+                    Text(goal.treeEmoji + " " + goal.treeName, fontSize = 14.sp, color = Color.Gray)
+                }
+
+                TextButton(onClick = onDeactivate) {
+                    Text("해제", color = Color.Gray, fontWeight = FontWeight.SemiBold)
+                }
+            }
+        }
+    }
+}
+
+
+
+// GoalCard 수정: 클릭 핸들러 및 활성 상태 표시 추가
+@Composable
+fun GoalCard(
+    goal: GoalItem,
+    onGoalClick: (GoalItem) -> Unit,
+    onDelete: (GoalItem) -> Unit
+) {
+    val containerColor = if (goal.isActive) Color(0xFFF8F8F8) else Color.White
+    val borderColor = if (goal.isActive) Color(0xFF8BC34A) else Color.LightGray
+
+    Card(
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = containerColor),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .border(1.dp, borderColor, RoundedCornerShape(8.dp))
+            .clickable { onGoalClick(goal) } // 활성화/비활성화 클릭 이벤트
     ) {
         Row(
             modifier = Modifier.padding(12.dp),
@@ -62,14 +111,22 @@ fun GoalCard(goal: GoalItem) {
                 Text(goal.treeEmoji + " " + goal.treeName, fontSize = 14.sp, color = Color.Gray)
             }
             Spacer(Modifier.weight(1f))
-            Text("🗑️", modifier = Modifier.clickable { GoalState.goalList.remove(goal) })
+
+            if (goal.isActive) {
+                Text("✓", color = Color(0xFF8BC34A), fontSize = 20.sp) // 활성화 시 체크 표시
+                Spacer(Modifier.width(10.dp))
+            }
+
+            // 삭제 버튼
+            Text("🗑️", modifier = Modifier.clickable { onDelete(goal) })
         }
     }
 }
 
 
+
 // ==========================================================
-// 2. MainContent 내부 UI 컴포넌트 (하나로 통합하여 레이아웃 통일)
+// 2. GoalManagementScreen
 // ==========================================================
 
 @Composable
@@ -77,15 +134,36 @@ fun GoalManagementScreen(navController: NavController, goals: List<GoalItem>) {
 
     val hasGoals = goals.isNotEmpty()
 
+    // 활성 목표 관리 로직
+    val setActive: (GoalItem) -> Unit = { selectedGoal ->
+        // 1. 모든 목표 비활성화
+        GoalState.goalList.replaceAll { it.copy(isActive = false) }
+        // 2. 선택된 목표 활성화
+        val index = GoalState.goalList.indexOfFirst { it.id == selectedGoal.id }
+        if (index != -1) {
+            // 새롭게 복사된 GoalItem을 대입하여 상태 업데이트 강제
+            GoalState.goalList[index] = selectedGoal.copy(isActive = true)
+        }
+    }
+
+    val clearActive: () -> Unit = {
+        // 모든 목표 비활성화 (해제)
+        GoalState.goalList.replaceAll { it.copy(isActive = false) }
+    }
+
+    val activeGoal = goals.find { it.isActive }
+    // 활성 목표 관리 로직 끝
+
+
     // 외곽 컨테이너 Column: NavBar를 제외한 공간을 채웁니다.
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        // ⭐ 1. 상단 여백 (50.dp 유지)
+        // 1. 상단 여백 (50.dp 유지)
         Spacer(modifier = Modifier.height(50.dp))
 
-        // ⭐ 2. 흰색 박스 (Card) 구조 유지
+        // 2. 흰색 박스 (Card) 구조 유지
         Card(
             shape = RoundedCornerShape(20.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -95,7 +173,7 @@ fun GoalManagementScreen(navController: NavController, goals: List<GoalItem>) {
                 .padding(horizontal = 20.dp)
         ) {
 
-            // 박스 내부 콘텐츠 Column (스크롤이 필요 없는 상/하단 고정 콘텐츠)
+            // 박스 내부 콘텐츠 Column
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -133,25 +211,34 @@ fun GoalManagementScreen(navController: NavController, goals: List<GoalItem>) {
                     }
                 }
 
-                // ⭐⭐ 목표 유무에 따른 동적 콘텐츠 영역 ⭐⭐
+                // 목표 유무에 따른 동적 콘텐츠 영역
                 if (hasGoals) {
-                    // 목표 있음 상태: 목표 목록은 스크롤 가능해야 하므로 LazyColumn을 사용
-                    Spacer(modifier = Modifier.height(16.dp)) // 버튼과 목록 사이 간격
 
-                    // Column의 남은 공간을 채우기 위해 LazyColumn을 weight(1f)로 설정하고 스크롤 가능하게 함
+                    // 활성 목표 카드 표시
+                    activeGoal?.let {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        ActiveGoalCard(goal = it, onDeactivate = clearActive)
+                    }
+                    // 활성 목표 카드 표시 끝
+
+                    Spacer(modifier = Modifier.height(16.dp)) // 활성 목표 카드/버튼과 목록 사이 간격
+
+                    // 목표 목록 LazyColumn
                     LazyColumn(
                         modifier = Modifier.weight(1f),
-                        contentPadding = PaddingValues(bottom = 20.dp) // 사용 팁과의 간격 확보
+                        contentPadding = PaddingValues(bottom = 20.dp)
                     ) {
                         items(goals.reversed()) { goal ->
-                            GoalCard(goal = goal)
+                            GoalCard(
+                                goal = goal,
+                                onGoalClick = setActive, // 활성 목표 설정 핸들러 전달
+                                onDelete = { GoalState.goalList.remove(it) } // 삭제 핸들러 전달
+                            )
                         }
                     }
 
                 } else {
-                    // 목표 없음 상태: 메시지 영역은 스크롤 불필요, 고정 높이 Spacer로 레이아웃 고정
-
-                    // 4. 목표 없음 메시지 영역 (목표 없음 상태에서만 표시)
+                    // 목표 없음 상태
                     Spacer(modifier = Modifier.height(100.dp))
                     Column(
                         modifier = Modifier.fillMaxWidth(),
@@ -164,28 +251,28 @@ fun GoalManagementScreen(navController: NavController, goals: List<GoalItem>) {
                         Text("새 목표를 만들어보세요", fontSize = 16.sp, color = Color.Gray)
                     }
                     Spacer(modifier = Modifier.height(100.dp))
-
-                    // 이 영역에서 weight(1f)를 주지 않으므로, 사용 팁은 항상 고정된 위치에 배치됨.
                 }
 
-                // 5. 사용 팁 섹션 (모든 상태에서 하단에 고정)
-                Card(
-                    shape = RoundedCornerShape(10.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF0FFF0)),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(1.dp, Color(0xFF8BC34A), RoundedCornerShape(10.dp))
-                ) {
-                    Column(modifier = Modifier.padding(27.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("💡", fontSize = 20.sp, modifier = Modifier.size(20.dp))
-                            Spacer(Modifier.width(8.dp))
-                            Text("사용 팁", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                // 5. 사용 팁 섹션 (목표가 없을 때만 표시)
+                if (!hasGoals) {
+                    Card(
+                        shape = RoundedCornerShape(10.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFF0FFF0)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(1.dp, Color(0xFF8BC34A), RoundedCornerShape(10.dp))
+                    ) {
+                        Column(modifier = Modifier.padding(27.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text("💡", fontSize = 20.sp, modifier = Modifier.size(20.dp))
+                                Spacer(Modifier.width(8.dp))
+                                Text("사용 팁", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                            }
+                            Spacer(Modifier.height(8.dp))
+                            Text(text = "• 목표를 선택하고 타이머를 시작하면 해당 나무가 자랍니다", fontSize = 13.5.sp)
+                            Spacer(Modifier.height(8.dp))
+                            Text(text = "• 목표를 선택하지 않으면 기본 나무가 자랍니다", fontSize = 13.5.sp)
                         }
-                        Spacer(Modifier.height(8.dp))
-                        Text(text = "• 목표를 선택하고 타이머를 시작하면 해당 나무가 자랍니다", fontSize = 13.5.sp)
-                        Spacer(Modifier.height(8.dp))
-                        Text(text = "• 목표를 선택하지 않으면 기본 나무가 자랍니다", fontSize = 13.5.sp)
                     }
                 }
             }
@@ -207,7 +294,6 @@ fun Goal2(navController: NavController) {
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        // 목표 유무와 관계없이 하나의 통일된 레이아웃 구조 호출
         GoalManagementScreen(navController, goals)
 
         // 하단에 NavBar 배치

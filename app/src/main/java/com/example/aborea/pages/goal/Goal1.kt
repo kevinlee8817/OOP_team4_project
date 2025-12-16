@@ -26,8 +26,8 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 
 
 // ==========================================================
-// 1. 데이터 모델 및 전역 상태 정의 (Goal2.kt 파일과 동일하거나 공유되어야 함)
-// Goal2.kt에 정의된 GoalItem과 GoalState를 사용한다고 가정합니다.
+// 1. 전역 상태 관리 및 목표 데이터 모델 정의 (Goal2.kt와 공유)
+// ==========================================================
 
 data class SelectionItem(
     val id: Int,
@@ -89,7 +89,7 @@ fun SelectButton(
 @Composable
 fun NewGoalScreen(navController: NavController) {
 
-    // ⭐ 목표 이름 상태 변수
+    // 목표 이름 상태 변수
     var goalName by remember { mutableStateOf("") }
     var selectedCategoryId by remember { mutableStateOf(-1) }
     var selectedTreeId by remember { mutableStateOf(-1) }
@@ -256,8 +256,8 @@ fun NewGoalScreen(navController: NavController) {
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
-                .padding(bottom = 1.dp),
+                .height(80.dp)
+                .padding(bottom = 25.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8BC34A)),
             shape = RoundedCornerShape(8.dp)
         ) {
