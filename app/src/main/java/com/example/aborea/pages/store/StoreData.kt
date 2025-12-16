@@ -118,4 +118,22 @@ class StoreStorage(context: Context) {
         editor.putStringSet("purchased_ids", newIds)
         editor.apply()
     }
+
+
+
+
+
+
+
+    // 추가됨: 보류 중인 집중 시간(초) 저장 및 불러오기
+    fun getPendingFocusSeconds(): Int {
+        return prefs.getInt("pending_focus_seconds", 0)
+    }
+
+    fun savePendingFocusSeconds(seconds: Int) {
+        prefs.edit().putInt("pending_focus_seconds", seconds).apply()
+    }
+
+
+
 }

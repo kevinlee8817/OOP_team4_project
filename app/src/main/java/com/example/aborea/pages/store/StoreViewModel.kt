@@ -79,20 +79,27 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
 
 
 
-// 이건 나중에 받아서 넣을 것들
+    fun addFocusSeconds(deltaSeconds: Int) {
+        if (deltaSeconds <= 0) return
 
+        // pending 초(아직 포인트로 환산 안 된 잔여 초) 누적
+        val pending = storage.getPendingFocusSeconds() + deltaSeconds
 
-    fun TimeToTreePoint(minutes: Int) {
+        // 3600초(1시간)당 1포인트
+        val earnedPoint = pending / 3600
+        val remainder = pending % 3600
 
-        val earnedPoint = minutes / 60
+        // 남은 초는 저장해서 다음에 이어서 누적
+        storage.savePendingFocusSeconds(remainder)
 
+        // 포인트가 생겼으면 포인트 업데이트 + 저장
         if (earnedPoint > 0) {
             val newPoint = _myTreePoint.value + earnedPoint
-
             _myTreePoint.value = newPoint
             storage.saveMyPoint(newPoint)
         }
     }
+
 
 
     // '열매' 리스트 받아서 그걸로도 결제할 수 있는 구조 만들기
