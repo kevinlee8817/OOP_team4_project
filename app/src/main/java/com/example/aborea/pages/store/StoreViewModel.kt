@@ -89,6 +89,17 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
         val earnedPoint = pending / 3600
         val remainder = pending % 3600
 
+
+        /** 3600초 당 1포인트 좀 빡센 거 같으면
+         *
+         *
+        val earnedPoint = pending / 60
+        val remainder = pending % 60
+         --> 1분 당 1포인트 로 조정 가능
+         */
+
+
+
         // 남은 초는 저장해서 다음에 이어서 누적
         storage.savePendingFocusSeconds(remainder)
 
