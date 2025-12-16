@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ProgressBar(progress: Float, color: Long) {
+fun ProgressBar(status: Fruits, color: Long, index: Int) {
     Box(
         modifier = Modifier
             .width(350.dp)
@@ -30,7 +30,7 @@ fun ProgressBar(progress: Float, color: Long) {
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth(progress)
+                .fillMaxWidth(status.percentage[index])
                 .fillMaxHeight()
                 .clip(RoundedCornerShape(10.dp))
                 .background(

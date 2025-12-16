@@ -27,7 +27,8 @@ import com.example.aborea.R
 import com.example.aborea.common.OwnglyphText
 
 @Composable
-fun CategoryStats() {
+fun CategoryStats(status: Fruits) {
+    status.getPercentage()
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -47,13 +48,13 @@ fun CategoryStats() {
             ) {
                 Image(
                     modifier = Modifier
-                        .size(50.dp)
+                        .size(40.dp)
                         .offset(y = 5.dp),
                     painter = painterResource(id = R.drawable.study),
                     contentDescription = "fruitTree",
                     contentScale = ContentScale.Crop
                 )
-                OwnglyphText("공부: n%", 30, 55, 15, 0xFF6A6A6A)
+                OwnglyphText("공부: ${status.percentage[0]*100f}%", 25, 40, 15, 0xFF6A6A6A)
 
             }
             Box(
@@ -64,13 +65,13 @@ fun CategoryStats() {
             ) {
                 Image(
                     modifier = Modifier
-                        .size(50.dp)
+                        .size(40.dp)
                         .offset(y = 5.dp),
                     painter = painterResource(id = R.drawable.sports),
                     contentDescription = "fruitTree",
                     contentScale = ContentScale.Crop
                 )
-                OwnglyphText("운동: n%", 30, 55, 15, 0xFF6A6A6A)
+                OwnglyphText("운동: ${status.percentage[1]*100f}%", 25, 40, 15, 0xFF6A6A6A)
 
             }
         }
@@ -87,13 +88,13 @@ fun CategoryStats() {
             ) {
                 Image(
                     modifier = Modifier
-                        .size(50.dp)
+                        .size(40.dp)
                         .offset(y = 5.dp),
                     painter = painterResource(id = R.drawable.work),
                     contentDescription = "fruitTree",
                     contentScale = ContentScale.Crop
                 )
-                OwnglyphText("업무: n%", 30, 55, 15, 0xFF6A6A6A)
+                OwnglyphText("업무: ${status.percentage[2]*100f}%", 25, 40, 15, 0xFF6A6A6A)
 
             }
             Box(
@@ -104,13 +105,13 @@ fun CategoryStats() {
             ) {
                 Image(
                     modifier = Modifier
-                        .size(50.dp)
+                        .size(40.dp)
                         .offset(y = 5.dp),
                     painter = painterResource(id = R.drawable.hobby),
                     contentDescription = "fruitTree",
                     contentScale = ContentScale.Crop
                 )
-                OwnglyphText("취미: n%", 30, 55, 15, 0xFF6A6A6A)
+                OwnglyphText("취미: ${status.percentage[3]*100f}%", 25, 40, 15, 0xFF6A6A6A)
 
             }
         }

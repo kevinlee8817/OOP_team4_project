@@ -4,13 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.aborea.common.*
 import com.example.aborea.pages.goal.*
 import com.example.aborea.pages.home.*
 import com.example.aborea.pages.statistics.*
-import com.example.aborea.pages.store.StoreScreen
+import com.example.aborea.pages.statistics.compose.Fruits
+import com.example.aborea.pages.store.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
+            val status = remember { mutableStateOf(Fruits()) }
             NavHost(navController = navController, startDestination = "home1") {
                 composable("home1") {
                     Home1(navController)
@@ -32,22 +37,17 @@ class MainActivity : ComponentActivity() {
                     Goal2(navController)
                 }
                 composable("statistics1") {
-                    Statistics1(navController)
+                    Statistics1(navController, status)
                 }
                 composable("statistics2") {
-                    Statistics2(navController)
+                    Statistics2(navController, status)
                 }
                 composable("store1") {
                     StoreScreen(navController)
                 }
-                /*
-                store1 (파일명 StoreScreen) 에서 바로 store2 = 상세화면(StoreDetailScreen)으로
-                넘어가는 구조라 MainActivity 에서 연결하지 않고 주석처리했습니다
-
-                composable("store2") {
-                    StoreDetailScreen()
-                }       */
-
+                //composable("store2") {
+                //    Store2(navController)
+                //}
             }
         }
     }

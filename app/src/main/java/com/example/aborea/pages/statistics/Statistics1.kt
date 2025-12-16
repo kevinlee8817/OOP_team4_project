@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,11 +17,12 @@ import com.example.aborea.common.NavBar
 import com.example.aborea.common.OwnglyphText
 import com.example.aborea.common.SetBackground
 import com.example.aborea.pages.statistics.compose.FruitTree
+import com.example.aborea.pages.statistics.compose.Fruits
 import com.example.aborea.pages.statistics.compose.GoalStats
 import com.example.aborea.pages.statistics.compose.SubNavBar
 
 @Composable
-fun Statistics1(navController: NavController) {
+fun Statistics1(navController: NavController, status: MutableState<Fruits>) {
     SetBackground()
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -38,15 +40,9 @@ fun Statistics1(navController: NavController) {
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        FruitTree()
-        OwnglyphText(
-            text = "목표 현황",
-            size = 40,
-            offSetX = -100,
-            offSetY = 0,
-            color = 0xFF6A6A6A
-        )
-        GoalStats()
+        FruitTree(status.value)
+        OwnglyphText(text = "목표 현황", size = 40, offSetX = -100, offSetY = 0, color = 0xFF6A6A6A)
+        GoalStats(status.value)
         NavBar(navController)
     }
 }
