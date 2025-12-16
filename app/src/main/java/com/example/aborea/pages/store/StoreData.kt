@@ -7,7 +7,13 @@ import com.example.aborea.R
 
 
 
-//-------------------------------------------------------------------------------------
+enum class CurrencyType {
+    POINT,          // 기존 나무 포인트 (🌳)
+    FRUIT_RED,      // 빨간 열매 (index 0)
+    FRUIT_BLUE,     // 파란 열매 (index 1)
+    FRUIT_YELLOW,   // 노란 열매 (index 2)
+    FRUIT_PURPLE    // 보라 열매 (index 3)
+}
 
 
 
@@ -17,13 +23,13 @@ data class StoreItem(
     val name: String,
     val price: Int,
     val image: Int? = null,
-    val isPurchased: Boolean = false
+    val isPurchased: Boolean = false,
+    val currencyType: CurrencyType = CurrencyType.POINT // 기본화폐단위 : 나무포인트
 )
 
 
 
 
-//-------------------------------------------------------------------------------------
 
 
 
@@ -33,18 +39,15 @@ val defaultItemList = listOf(
     StoreItem(2, "대나무", 300, R.drawable.store_bamboo),
     StoreItem(3, "단풍나무", 300, R.drawable.store_maple),
     StoreItem(4, "흐릿나무", 300, R.drawable.store_justtree),
-    StoreItem(5, "별나무", 300, R.drawable.store_startree),
-    StoreItem(6, "벚꽃나무", 300, R.drawable.store_cherryblossom),
-    StoreItem(7, "달나무", 500, R.drawable.store_moontree),
-    StoreItem(8, "반디나무", 400, R.drawable.store_fireflytree),
+    StoreItem(5, "별나무", 3, R.drawable.store_startree, currencyType = CurrencyType.FRUIT_BLUE),
+    StoreItem(6, "벚꽃나무", 7, R.drawable.store_cherryblossom, currencyType = CurrencyType.FRUIT_PURPLE),
+    StoreItem(7, "달나무", 5, R.drawable.store_moontree, currencyType = CurrencyType.FRUIT_RED),
+    StoreItem(8, "반디나무", 10, R.drawable.store_fireflytree, currencyType = CurrencyType.FRUIT_YELLOW),
     StoreItem(9, "사과나무", 400, R.drawable.store_appletree),
     StoreItem(10, "소나무", 350, R.drawable.store_pine),
     StoreItem(11, "버드나무", 350, R.drawable.store_willow),
-    StoreItem(12, "자작나무", 350, R.drawable.store_birch)
+    StoreItem(12, "자작나무", 350, R.drawable.store_birch),
 )
-
-
-
 
 
 
@@ -57,10 +60,11 @@ val defaultItemList = listOf(
 // 데이터 저장소 ( 영구 저장 및 관리 기능 )
 /** 안드로이드 SharedPreferences 사용
  * 저장해야 할 데이터의 형태가 '포인트, 구매 목록' 같이 단순한 형태라
- * 가장 가벼운 SHaredPreferences를 사용했습니다.
  */
 
-//-------------------------------------------------------------------------------------
+
+
+
 class StoreStorage(context: Context) {
 
     // "store_save_file" 이라는 이름의 파일에 저장
@@ -68,7 +72,7 @@ class StoreStorage(context: Context) {
 
 
 
-//-------------------------------------------------------------------------------------
+
 
     // 포인트 관리
 
@@ -87,7 +91,7 @@ class StoreStorage(context: Context) {
         editor.apply() // 저장 확정
     }
 
-//-------------------------------------------------------------------------------------
+
 
 
 

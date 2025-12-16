@@ -47,6 +47,13 @@ fun StoreDetailScreen(
 ) {
 
 
+    val currencyIcon = when(item.currencyType) {
+        CurrencyType.POINT -> "🌳"
+        CurrencyType.FRUIT_RED -> "🍎"
+        CurrencyType.FRUIT_BLUE -> "🫐"
+        CurrencyType.FRUIT_YELLOW -> "🍋"
+        CurrencyType.FRUIT_PURPLE -> "🍇"
+    }
 
 
     // 내 잔고가 가격보다 많으면 구매 가능 버튼 활성화 -> 구매 가능 여부를 여기서 확인
@@ -88,7 +95,7 @@ fun StoreDetailScreen(
 
                 // 잔고 보여주는 텍스트
                 Text(
-                    text = "🌳 $balance",
+                    text = "$currencyIcon $balance",
                     fontSize = 24.sp,
                     fontFamily = detailFont,
                     color = Color(0xFF333333)
@@ -96,6 +103,9 @@ fun StoreDetailScreen(
             }
 
             Spacer(modifier = Modifier.height(40.dp))
+
+
+
 
 
 

@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                     Statistics2(navController, status)
                 }
                 composable("store1") {
-                    StoreScreen(navController)
+                    StoreScreen(navController, status.value)
                 }
                 //composable("store2") {
                 //    Store2(navController)

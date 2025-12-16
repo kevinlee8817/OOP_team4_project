@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -33,12 +32,16 @@ import com.example.aborea.common.OwnglyphText
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.activity.compose.BackHandler
 
+import com.example.aborea.pages.statistics.compose.Fruits
+
+
 // 폰트
 val customFont = FontFamily(Font(R.font.ownglyph))
 
 @Composable
 fun StoreScreen(
     navController: NavController,
+    fruits: Fruits,
     viewModel: StoreViewModel = viewModel()     // 뷰모델 연결
 ) {
 
@@ -81,11 +84,20 @@ fun StoreScreen(
             selectedItem = null
         }
 
+        val myBalance = when (selectedItem!!.currencyType) {
+            CurrencyType.POINT -> currentPoint
+            CurrencyType.FRUIT_RED -> fruits.fruitContainer[0]
+            CurrencyType.FRUIT_BLUE -> fruits.fruitContainer[1]
+            CurrencyType.FRUIT_YELLOW -> fruits.fruitContainer[2]
+            CurrencyType.FRUIT_PURPLE -> fruits.fruitContainer[3]
+        }
+
         StoreDetailScreen(
             item = selectedItem!!,
-            balance = currentPoint, // 여기도 이름 맞춰서 넣기
+            balance = myBalance, // 포인트 대신 열매 개수가 넘어감
             onBackClick = { selectedItem = null },
-            onBuyClick = { viewModel.buyItem(selectedItem!!) }
+            // viewModel에 fruits 객체도 같이 넘김
+            onBuyClick = { viewModel.buyItem(selectedItem!!, fruits) }
         )
     }
 
@@ -188,6 +200,19 @@ fun StoreItemCard(
     item: StoreItem,
     onClick: () -> Unit
 ) {
+
+
+    // 화폐 아이콘 결정
+    val currencyIcon = when(item.currencyType) {
+        CurrencyType.POINT -> "🌳"
+        CurrencyType.FRUIT_RED -> "🍎"
+        CurrencyType.FRUIT_BLUE -> "🫐"
+        CurrencyType.FRUIT_YELLOW -> "🍋"
+        CurrencyType.FRUIT_PURPLE -> "🍇"
+    }
+
+
+
     Card(
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -232,7 +257,7 @@ fun StoreItemCard(
 
                 // 이름 및 가격
                 Text(
-                    text = "${item.name} : 🌳 ${item.price}",
+                    text = "${item.name} : $currencyIcon ${item.price}",  // 화폐마다 아이콘 다르게
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
@@ -269,6 +294,12 @@ fun StoreItemCard(
 fun StoreScreenPreview() {
     MaterialTheme {
         val dummyNavController = rememberNavController()
-        StoreScreen(navController = dummyNavController)
+
+        val dummyFruits = Fruits()
+
+        StoreScreen(
+            navController = dummyNavController,
+            fruits = dummyFruits
+        )
     }
 }

@@ -282,3 +282,4 @@ fun Goal1(navController: NavController) {
 fun Goal1Preview() {
     Goal1(rememberNavController())
 }
+
