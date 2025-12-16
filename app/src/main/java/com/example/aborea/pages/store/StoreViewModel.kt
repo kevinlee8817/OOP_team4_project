@@ -85,18 +85,17 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
         // pending 초(아직 포인트로 환산 안 된 잔여 초) 누적
         val pending = storage.getPendingFocusSeconds() + deltaSeconds
 
-        // 3600초(1시간)당 1포인트
+        /* 3600초(1시간)당 1포인트
         val earnedPoint = pending / 3600
         val remainder = pending % 3600
+        */
 
-
-        /** 3600초 당 1포인트 좀 빡센 거 같으면
-         *
-         *
+        /* 60초 당 1 포인트
+        일단 시연용으로 60초 당 1포인트씩 주는 걸로 환율 조정했습니다
+         */
         val earnedPoint = pending / 60
         val remainder = pending % 60
-         --> 1분 당 1포인트 로 조정 가능
-         */
+
 
 
 

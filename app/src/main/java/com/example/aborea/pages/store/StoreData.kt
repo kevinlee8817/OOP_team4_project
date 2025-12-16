@@ -29,18 +29,18 @@ data class StoreItem(
 
 // 아이템 리스트 (기본 데이터)
 val defaultItemList = listOf(
-    StoreItem(1, "대나무", 300, R.drawable.store_bamboo),
-    StoreItem(2, "단풍나무", 300, R.drawable.store_maple),
-    StoreItem(3, "흐릿나무", 300, R.drawable.store_justtree),
-    StoreItem(4, "별나무", 300, R.drawable.store_startree),
-    StoreItem(5, "벚꽃나무", 300, R.drawable.store_cherryblossom),
-    StoreItem(6, "달나무", 500, R.drawable.store_moontree),
-    StoreItem(7, "반디나무", 400, R.drawable.store_fireflytree),
-    StoreItem(8, "사과나무", 400, R.drawable.store_appletree),
-    StoreItem(9, "소나무", 350, R.drawable.store_pine),
-    StoreItem(10, "버드나무", 350, R.drawable.store_willow),
-    StoreItem(11, "자작나무", 350, R.drawable.store_birch),
-    StoreItem(12, "참나무", 350, R.drawable.store_oak)
+    StoreItem(1, "참나무", 0, R.drawable.store_oak, isPurchased = true), // 기본지급
+    StoreItem(2, "대나무", 300, R.drawable.store_bamboo),
+    StoreItem(3, "단풍나무", 300, R.drawable.store_maple),
+    StoreItem(4, "흐릿나무", 300, R.drawable.store_justtree),
+    StoreItem(5, "별나무", 300, R.drawable.store_startree),
+    StoreItem(6, "벚꽃나무", 300, R.drawable.store_cherryblossom),
+    StoreItem(7, "달나무", 500, R.drawable.store_moontree),
+    StoreItem(8, "반디나무", 400, R.drawable.store_fireflytree),
+    StoreItem(9, "사과나무", 400, R.drawable.store_appletree),
+    StoreItem(10, "소나무", 350, R.drawable.store_pine),
+    StoreItem(11, "버드나무", 350, R.drawable.store_willow),
+    StoreItem(12, "자작나무", 350, R.drawable.store_birch)
 )
 
 
