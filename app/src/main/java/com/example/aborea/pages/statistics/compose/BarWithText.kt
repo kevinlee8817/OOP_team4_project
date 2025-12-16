@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.example.aborea.common.OwnglyphText
 
 @Composable
-fun BarWithText() {
+fun BarWithText(status: Fruits) {
     Row(
         horizontalArrangement = Arrangement.Center
     ) {
@@ -34,10 +34,10 @@ fun BarWithText() {
                 .offset(y = 8.dp),
             verticalArrangement = Arrangement.spacedBy(17.dp)
         ) {
-            ProgressBar(0.2f, 0xFFEA6751)
-            ProgressBar(0.4f, 0xFF4B90C0)
-            ProgressBar(0.7f, 0xFFFECE54)
-            ProgressBar(0.5f, 0xFF9D6297)
+            ProgressBar(status, 0xFFEA6751, 0)
+            ProgressBar(status, 0xFF4B90C0, 1)
+            ProgressBar(status, 0xFFFECE54, 2)
+            ProgressBar(status, 0xFF9D6297, 3)
         }
     }
 }

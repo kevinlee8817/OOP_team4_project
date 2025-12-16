@@ -32,12 +32,12 @@ import com.example.aborea.common.OwnglyphText
 import com.example.aborea.common.SetBackground
 
 @Composable
-fun FruitContainer() {
+fun FruitContainer(status: Fruits) {
     val fruits = mapOf("붉은열매" to R.drawable.redfruit, "푸른열매" to R.drawable.bluefruit, "황금열매" to R.drawable.yellowfruit, "자색열매" to R.drawable.purplefruit)
     Card(
         modifier = Modifier
             .fillMaxWidth(0.4f)
-            .fillMaxHeight(0.05f)
+            .fillMaxHeight(0.08f)
             .offset(y = 10.dp),
         shape = RoundedCornerShape(32.dp),
         colors = CardDefaults.cardColors(
@@ -57,7 +57,7 @@ fun FruitContainer() {
     Card(
         modifier = Modifier
             .fillMaxWidth(0.9f)
-            .fillMaxHeight(0.25f)
+            .fillMaxHeight(0.35f)
             .offset(y = 10.dp),
         shape = RoundedCornerShape(32.dp),
         colors = CardDefaults.cardColors(
@@ -90,7 +90,7 @@ fun FruitContainer() {
                         contentDescription = "fruitTree",
                         contentScale = ContentScale.Crop
                     )
-                    OwnglyphText("붉은열매\n  n개", 25, 55, 7, 0xFF6A6A6A)
+                    OwnglyphText("붉은열매\n  ${status.fruitContainer[0]}개", 25, 55, 7, 0xFF6A6A6A)
 
                 }
                 Box(
@@ -108,7 +108,7 @@ fun FruitContainer() {
                         contentDescription = "fruitTree",
                         contentScale = ContentScale.Crop
                     )
-                    OwnglyphText("푸른열매\n  n개", 25, 55, 7, 0xFF6A6A6A)
+                    OwnglyphText("푸른열매\n  ${status.fruitContainer[1]}개", 25, 55, 7, 0xFF6A6A6A)
 
                 }
             }
@@ -132,7 +132,7 @@ fun FruitContainer() {
                         contentDescription = "fruitTree",
                         contentScale = ContentScale.Crop
                     )
-                    OwnglyphText("황금열매\n  n개", 25, 55, 7, 0xFF6A6A6A)
+                    OwnglyphText("황금열매\n  ${status.fruitContainer[2]}개", 25, 55, 7, 0xFF6A6A6A)
 
                 }
                 Box(
@@ -150,7 +150,7 @@ fun FruitContainer() {
                         contentDescription = "fruitTree",
                         contentScale = ContentScale.Crop
                     )
-                    OwnglyphText("자색열매\n  n개", 25, 55, 7, 0xFF6A6A6A)
+                    OwnglyphText("자색열매\n  ${status.fruitContainer[0]}개", 25, 55, 7, 0xFF6A6A6A)
 
                 }
             }
