@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.aborea.common.OwnglyphText
 
 @Composable
-fun GoalStats() {
+fun GoalStats(status: Fruits) {
     Card(
         modifier = Modifier
             .fillMaxWidth(0.9f)
@@ -46,7 +46,8 @@ fun GoalStats() {
                 for(i in 0..5)
                     OwnglyphText("$i", 20, 0, 0, 0xFFF6F3EE)
             }
-            BarWithText()
+            status.getPercentage()
+            BarWithText(status)
         }
     }
 }

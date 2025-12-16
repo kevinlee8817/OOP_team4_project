@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -21,7 +22,7 @@ import com.example.aborea.pages.statistics.compose.GoalStats
 import com.example.aborea.pages.statistics.compose.SubNavBar
 
 @Composable
-fun Statistics1(navController: NavController, status: Fruits) {
+fun Statistics1(navController: NavController, status: MutableState<Fruits>) {
     SetBackground()
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -39,7 +40,7 @@ fun Statistics1(navController: NavController, status: Fruits) {
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        FruitTree(status)
+        FruitTree(status.value)
         OwnglyphText(
             text = "목표 현황",
             size = 40,
@@ -47,7 +48,7 @@ fun Statistics1(navController: NavController, status: Fruits) {
             offSetY = 0,
             color = 0xFF6A6A6A
         )
-        GoalStats()
+        GoalStats(status.value)
         NavBar(navController)
     }
 }

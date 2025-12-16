@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,7 +17,7 @@ import com.example.aborea.common.*
 import com.example.aborea.pages.statistics.compose.*
 
 @Composable
-fun Statistics2(navController: NavController) {
+fun Statistics2(navController: NavController, status: MutableState<Fruits>) {
     SetBackground()
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -34,8 +35,9 @@ fun Statistics2(navController: NavController) {
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CategoryStats()
-        FruitContainer()
+        PieChart(status.value)
+        CategoryStats(status.value)
+        FruitContainer(status.value)
         NavBar(navController)
     }
 }

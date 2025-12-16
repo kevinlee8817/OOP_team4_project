@@ -27,6 +27,7 @@ import com.example.aborea.common.OwnglyphText
 
 @Composable
 fun SubNavBar(navController: NavController) {
+    var route = navController.currentBackStackEntry?.destination?.route
     Card(
         modifier = Modifier
             .width(300.dp)
@@ -43,21 +44,43 @@ fun SubNavBar(navController: NavController) {
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(
-                onClick = {navController.navigate("statistics1")},
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF8FD036)
-                )
-            ) {
-                OwnglyphText("목표 현황", 25, 0, 0, 0xFFFCFCFC)
-            }
-            Button(
-                onClick = {navController.navigate("statistics2")},
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF8FD036)
-                )
-            ) {
-                OwnglyphText("목표 통계", 25, 0, 0, 0xFFFCFCFC)
+            when(route) {
+                "statistics1" -> {
+                    Button(
+                        onClick = {navController.navigate("statistics1")},
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF8FD036)
+                        )
+                    ) {
+                        OwnglyphText("목표 현황", 25, 0, 0, 0xFFFCFCFC)
+                    }
+                    Button(
+                        onClick = {navController.navigate("statistics2")},
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFFCFCFC)
+                        )
+                    ) {
+                        OwnglyphText("목표 통계", 25, 0, 0, 0xFF6A6A6A)
+                    }
+                }
+                "statistics2" -> {
+                    Button(
+                        onClick = {navController.navigate("statistics1")},
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFFCFCFC)
+                        )
+                    ) {
+                        OwnglyphText("목표 현황", 25, 0, 0, 0xFF6A6A6A)
+                    }
+                    Button(
+                        onClick = {navController.navigate("statistics2")},
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF8FD036)
+                        )
+                    ) {
+                        OwnglyphText("목표 통계", 25, 0, 0, 0xFFFCFCFC)
+                    }
+                }
             }
         }
     }

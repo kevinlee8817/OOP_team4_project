@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -20,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            val status = Fruits()
+            val status = remember { mutableStateOf(Fruits()) }
             NavHost(navController = navController, startDestination = "home1") {
                 composable("home1") {
                     Home1(navController)
@@ -38,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     Statistics1(navController, status)
                 }
                 composable("statistics2") {
-                    Statistics2(navController)
+                    Statistics2(navController, status)
                 }
                 composable("store1") {
                     Store1(navController)
