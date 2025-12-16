@@ -81,6 +81,7 @@ fun SubNavBar(navController: NavController) {
                         OwnglyphText("목표 통계", 25, 0, 0, 0xFFFCFCFC)
                     }
                 }
+                else -> {  }
             }
         }
     }
