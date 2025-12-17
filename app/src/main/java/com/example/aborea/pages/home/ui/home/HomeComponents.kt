@@ -26,9 +26,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.aborea.R
 import com.example.aborea.common.*
 import com.example.aborea.pages.home.Home1
-import com.example.aborea.pages.home.Home2
 
-//통계 버튼
+//btn_통계
 @Composable
 fun buttonStatistics(){
     Box(
@@ -47,15 +46,12 @@ fun buttonStatistics(){
                 painter = painterResource(id = R.drawable.btn_statistics),
                 contentDescription = "btn_statistics"
             )
-            //글씨 함수 오프셋?? -> modifier만 받아서 레이아웃은 사용자가 결정하게 하는 게,,,
-            //고정값으로 하는 코딩은 그렇게 좋지 않음.
             OwnglyphText("통계", 18, 0, 0, 0xFF3A3A3A)
         }
     }
 }
 
-//타이머 stop버튼
-
+//btn_타이머 스탑
 @Composable
 fun buttontimerstop(){
     Box(
@@ -93,7 +89,9 @@ fun focusTime(
 }
 @Composable
 //카테고리
-fun goalCategory(){
+fun goalCategory(
+    goalName: String
+){
         Box(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -108,7 +106,7 @@ fun goalCategory(){
             ){
                 Row(){
                     //아이콘
-                    OwnglyphText("공부", 20, 0, 0, 0xFF6A6A6A)
+                    OwnglyphText("$goalName", 20, 0, 0, 0xFF6A6A6A)
                 }
             }
         }
@@ -124,17 +122,20 @@ enum class TreeLevel(val treelevel: Int)
 //추후 수정 필요 -> tree type, treelevel별 나무 제공 (전체 component에 써야 하나)
 
 @Composable
-fun showTree(){
+fun showTree(
+    treeName: String,
+    stage: Int
+){
+    val treeResId = TreeMapper.getTreeRes(treeName,stage)
+
     Box(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ){
         Image(
-            modifier = Modifier
-                .size(307.dp),
-            painter = painterResource(id = R.drawable.tree2),
-            contentDescription = "fruitTree"
+            modifier = Modifier.size(307.dp),
+            painter = painterResource(id = treeResId),
+            contentDescription = "tree"
         )
     }
 
@@ -181,7 +182,7 @@ fun progressBar(
                 modifier = Modifier
                     .fillMaxWidth(percent/100f)
                     .fillMaxHeight()
-                    .background(Color(0xFF8FD036), shape = RoundedCornerShape(topStart = 50.dp))
+                    .background(Color(0xFF8FD036), shape = RoundedCornerShape(50.dp))
             )
         }
     }
@@ -315,12 +316,5 @@ fun RunningTimer(
 fun Home1Preview() {
     val navController = rememberNavController()
     Home1(navController = navController)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Home2Preview() {
-    val navController = rememberNavController()
-    Home2(navController = navController)
 }
 

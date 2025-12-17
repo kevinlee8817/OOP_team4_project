@@ -16,7 +16,7 @@ class HomeViewModel : ViewModel() {
     val elapsedSeconds: StateFlow<Int> = _elapsedSeconds
 
     // 타이머 실행 상태
-    private val _isRunning = MutableStateFlow(false)
+    val _isRunning = MutableStateFlow(false)
     val isRunning: StateFlow<Boolean> = _isRunning
 
     private var timerJob: Job? = null
