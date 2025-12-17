@@ -147,7 +147,7 @@ fun FruitContainer(status: Fruits) {
                         contentDescription = "fruitTree",
                         contentScale = ContentScale.Crop
                     )
-                    OwnglyphText("자색열매\n  ${status.fruitContainer[0]}개", 25, 55, 7, 0xFF6A6A6A)
+                    OwnglyphText("자색열매\n  ${status.fruitContainer[3]}개", 25, 55, 7, 0xFF6A6A6A)
 
                 }
             }
