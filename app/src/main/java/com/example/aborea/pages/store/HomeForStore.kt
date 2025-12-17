@@ -17,6 +17,10 @@ import com.example.aborea.pages.home.ui.home.HomeTimerState // 타이머 상태 
 
 
 
+
+
+
+
 @Composable
 fun TimeToTreePointEffect() {
     val app = LocalContext.current.applicationContext as Application
@@ -44,6 +48,8 @@ fun TimeToTreePointEffect() {
         }
     }
 }
+
+
 
 
 
