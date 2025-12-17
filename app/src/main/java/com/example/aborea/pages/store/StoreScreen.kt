@@ -44,20 +44,15 @@ val customFont = FontFamily(Font(R.font.ownglyph))
 @Composable
 fun StoreScreen(
     navController: NavController,
-    fruits: Fruits,
+    fruits: Fruits
 ) {
 
 
-// ✅ 1. Context(열쇠) 가져오기
     val context = LocalContext.current
 
-    // ✅ 2. 열쇠를 쥐여주면서 뷰모델 생성하기 (Factory 사용)
     val viewModel: StoreViewModel = viewModel(
         factory = ViewModelProvider.AndroidViewModelFactory(context.applicationContext as Application)
     )
-
-
-
 
     // 뷰모델 데이터 실시간 업데이트
     val currentPoint by viewModel.myTreePoint.collectAsState()
