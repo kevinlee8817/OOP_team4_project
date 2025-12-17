@@ -13,8 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.aborea.common.*
-import com.example.aborea.pages.statistics.compose.*
+import com.example.aborea.common.NavBar
+import com.example.aborea.common.SetBackground
+import com.example.aborea.pages.statistics.compose.CategoryStats
+import com.example.aborea.pages.statistics.compose.FruitContainer
+import com.example.aborea.pages.statistics.compose.Fruits
+import com.example.aborea.pages.statistics.compose.PieChart
+import com.example.aborea.pages.statistics.compose.SubNavBar
+
 @Composable
 fun Statistics2(navController: NavController, status: MutableState<Fruits>) {
     SetBackground()

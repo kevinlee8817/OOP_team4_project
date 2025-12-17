@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
@@ -45,9 +46,6 @@ class MainActivity : ComponentActivity() {
                 composable("store1") {
                     StoreScreen(navController)
                 }
-                //composable("store2") {
-                //    Store2(navController)
-                //}
             }
         }
     }
