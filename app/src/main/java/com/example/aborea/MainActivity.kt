@@ -28,9 +28,6 @@ class MainActivity : ComponentActivity() {
                 composable("home1") {
                     Home1(navController)
                 }
-                composable("home2") {
-                    Home2(navController)
-                }
                 composable("goal1") {
                     Goal1(navController)
                 }
