@@ -65,8 +65,8 @@ fun Home1(navController: NavController) {
         modifier = Modifier.fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceBetween
     ){
-        // 요거 추가해주시면 됩니다
-        TimeToTreePointEffect()
+
+        TimeToTreePointEffect() <----------이거 하나만 추가해주시면 됩니다
 
         //실제 홈화면
         HomeScreen(navController=navController)
