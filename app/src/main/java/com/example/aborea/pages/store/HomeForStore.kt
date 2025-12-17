@@ -46,7 +46,7 @@ Home1.kt 에서 이 부분를 아래와 같이 추가 한번만 해주실 수 �
 < import 부분 >
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.aborea.pages.home.viewmodel.HomeViewModel
-import com.example.aborea.pages.store.TimeToTreePoint
+import com.example.aborea.pages.store.TimeToTreePointEffect
 
 ......
 
