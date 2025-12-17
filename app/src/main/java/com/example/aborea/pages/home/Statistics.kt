@@ -27,9 +27,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.aborea.common.*
 import com.example.aborea.pages.home.ui.*
 import com.example.aborea.R
+import com.example.aborea.pages.home.viewmodel.HomeViewModel
 
 @Composable
-fun statistics(navController: NavController) {
+fun statistics(navController: NavController, time: HomeViewModel) {
     var period by remember { mutableStateOf(PeriodType.DAY) }
 
     SetBackground()
@@ -72,15 +73,15 @@ fun statistics(navController: NavController) {
             //집중 숲
             focusForest()
             //집중 시간 그래프
-            focusGraph()
+            focusGraph(time)
         }
 
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun defaultStatisticsPreview() {
-    val navController = rememberNavController()
-    statistics(navController = navController)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun defaultStatisticsPreview() {
+//    val navController = rememberNavController()
+//    statistics(navController = navController)
+//}

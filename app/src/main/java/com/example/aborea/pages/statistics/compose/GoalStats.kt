@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,8 +20,8 @@ import com.example.aborea.common.OwnglyphText
 
 @Composable
 fun GoalStats(status: Fruits) {
-    status.getFruits()
     status.getProgress()
+    status.getFruits()
     Card(
         modifier = Modifier
             .fillMaxWidth(0.9f)
