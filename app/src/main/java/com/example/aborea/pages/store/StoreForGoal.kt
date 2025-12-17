@@ -41,7 +41,7 @@ fun getMyTreeList(context: Context): List<StoreItem> {
     val purchasedIds = storage.getPurchasedIds()
 
     return defaultItemList.filter { item ->
-        // 기본 지급품 ( 참나무 ) or 돈주고 산거
+        // 기본 지급품 ( 흐릿나무 ) or 돈주고 산거
         item.isPurchased || purchasedIds.contains(item.id.toString())
     }
 }

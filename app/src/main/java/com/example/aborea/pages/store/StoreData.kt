@@ -35,7 +35,7 @@ data class StoreItem(
 
 // 아이템 리스트 (기본 데이터)
 val defaultItemList = listOf(
-    StoreItem(1, "흐릿나무", 300, R.drawable.store_justtree, isPurchased = true), // 기본 지급
+    StoreItem(1, "흐릿나무", 0, R.drawable.store_justtree, isPurchased = true), // 기본 지급
     StoreItem(2, "대나무", 300, R.drawable.store_bamboo),
     StoreItem(3, "단풍나무", 300, R.drawable.store_maple),
     StoreItem(4, "참나무", 0, R.drawable.store_oak),
