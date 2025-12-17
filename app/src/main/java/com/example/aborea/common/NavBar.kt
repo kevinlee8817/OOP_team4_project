@@ -58,7 +58,7 @@ fun NavBar(navController: NavController) {
                         contentDescription = "home button"
                     )
                 }
-                Button(onClick = {navController.navigate("goal2")}, colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)) {
+                Button(onClick = {navController.navigate("goal1")}, colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)) {
                     Image(
                         modifier = Modifier
                             .size(47.dp)
