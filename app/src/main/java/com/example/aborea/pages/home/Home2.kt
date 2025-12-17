@@ -1,4 +1,4 @@
-package com.example.aborea.pages.home
+/*package com.example.aborea.pages.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,3 +55,5 @@ fun m2Preview() {
     val navController = rememberNavController()
     Home2(navController = navController)
 }
+
+ */
