@@ -1,35 +1,47 @@
 package com.example.aborea.pages.store
 
-import android.app.Application
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.aborea.pages.home.viewmodel.HomeViewModel
+import androidx.lifecycle.ViewModelProvider
+import android.app.Application
+import com.example.aborea.pages.home.ui.home.HomeTimerState // 타이머 상태 import
 
 
 
-// 집중 시간에 따라 나무 포인트 적립해주는 효과 ( Home 에서 받아옴 )
+
+
+
+
 
 @Composable
-fun TimeToTreePointEffect(homeViewModel: HomeViewModel) {
+fun TimeToTreePointEffect() {
     val app = LocalContext.current.applicationContext as Application
     val storeViewModel: StoreViewModel =
         viewModel(factory = ViewModelProvider.AndroidViewModelFactory(app))
 
-    val isRunning by homeViewModel.isRunning.collectAsState()
-    val elapsedSeconds by homeViewModel.elapsedSeconds.collectAsState()
+    val isRunning by HomeTimerState.isRunning
+    val elapsedSeconds by HomeTimerState.totalSeconds
 
     var lastSeconds by remember { mutableStateOf(elapsedSeconds) }
 
+    // 타이머 상태가 바뀔 때(켜지거나 꺼질 때) 마지막 시간 초기화
     LaunchedEffect(isRunning) {
         lastSeconds = elapsedSeconds
     }
 
+    // 시간 흐름 감지
     LaunchedEffect(elapsedSeconds) {
         if (isRunning) {
             val delta = elapsedSeconds - lastSeconds
+            // 차이만큼 포인트 적립
             if (delta > 0) storeViewModel.addFocusSeconds(delta)
+
             lastSeconds = elapsedSeconds
         }
     }
@@ -40,30 +52,24 @@ fun TimeToTreePointEffect(homeViewModel: HomeViewModel) {
 
 
 /*
+< Home1 파일에 >
 
-Home1.kt 에서 이 부분를 아래와 같이 추가 한번만 해주실 수 있나요??
-
-< import 부분 >
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.aborea.pages.home.viewmodel.HomeViewModel
-import com.example.aborea.pages.store.TimeToTreePointEffect
-
-......
-
+import com.example.aborea.pages.store.TimeToTreePointEffect <---- 이거 import 해주시고
 
 @Composable
 fun Home1(navController: NavController) {
     SetBackground()
-
-    val homeViewModel: HomeViewModel = viewModel() <-------- 이거
-
     Column(
         modifier = Modifier.fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        TimeToTreePointEffect(homeViewModel)   <--------이거
-        HomeScreen(navController = navController, viewModel = homeViewModel) <--------이거
+    ){
 
+        TimeToTreePointEffect() <----------이거 하나만 추가해주시면 됩니다
+
+        //실제 홈화면
+        HomeScreen(navController=navController)
+
+        //하단 바
         NavBar(navController)
     }
 }

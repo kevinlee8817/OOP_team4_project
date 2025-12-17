@@ -12,6 +12,7 @@ import com.example.aborea.pages.statistics.compose.Fruits
 
 class StoreViewModel(application: Application) : AndroidViewModel(application) {
 
+
     // StoreStorage (저장소) 연결
     private val storage = StoreStorage(application)
 
@@ -103,9 +104,6 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
 
 
 
-
-
-
     fun addFocusSeconds(deltaSeconds: Int) {
         if (deltaSeconds <= 0) return
 
@@ -131,7 +129,7 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
 
         // 포인트가 생겼으면 포인트 업데이트 + 저장
         if (earnedPoint > 0) {
-            val newPoint = _myTreePoint.value + earnedPoint
+            val newPoint = storage.getMyPoint() + earnedPoint
             _myTreePoint.value = newPoint
             storage.saveMyPoint(newPoint)
         }

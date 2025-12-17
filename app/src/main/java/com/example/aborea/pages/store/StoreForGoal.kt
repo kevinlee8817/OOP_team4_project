@@ -15,6 +15,19 @@ import androidx.compose.ui.platform.LocalContext
 
 밑에 함수 사용하시면 됩니다.
 
+
+
+
+fun Goal1 에
+
+val context = LocalContext.current
+
+하시고
+
+val myTreeList = getMyTreeList(context)
+이거 추가하시면
+myTreeList 에는 구매한 나무들만 들어있을 겁니다.
+
  */
 
 
@@ -28,7 +41,7 @@ fun getMyTreeList(context: Context): List<StoreItem> {
     val purchasedIds = storage.getPurchasedIds()
 
     return defaultItemList.filter { item ->
-        // 기본 지급품 ( 참나무 ) or 돈주고 산거
+        // 기본 지급품 ( 흐릿나무 ) or 돈주고 산거
         item.isPurchased || purchasedIds.contains(item.id.toString())
     }
 }

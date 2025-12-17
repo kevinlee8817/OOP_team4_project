@@ -135,7 +135,7 @@ fun StoreDetailScreen(
 
             // 상품 정보
             Text(
-                text = "${item.name} : 🌳 ${item.price}",
+                text = "${item.name} :  $currencyIcon ${item.price}",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = detailFont,
@@ -143,6 +143,9 @@ fun StoreDetailScreen(
             )
 
             Spacer(modifier = Modifier.height(20.dp))
+
+
+
 
 
 
@@ -172,6 +175,12 @@ fun StoreDetailScreen(
                 // 돈 없으면 버튼 비활성화 처리
                 enabled = canAfford
             )
+
+
+
+
+
+
 
 
 

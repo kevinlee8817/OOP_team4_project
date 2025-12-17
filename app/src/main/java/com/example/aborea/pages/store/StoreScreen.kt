@@ -1,5 +1,6 @@
 package com.example.aborea.pages.store
 
+import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,6 +32,8 @@ import com.example.aborea.common.OwnglyphText
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.activity.compose.BackHandler
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModelProvider
 
 import com.example.aborea.pages.statistics.compose.Fruits
 
@@ -41,16 +44,15 @@ val customFont = FontFamily(Font(R.font.ownglyph))
 @Composable
 fun StoreScreen(
     navController: NavController,
-    fruits: Fruits,
-    viewModel: StoreViewModel = viewModel()     // 뷰모델 연결
+    fruits: Fruits
 ) {
 
 
+    val context = LocalContext.current
 
-
-
-
-
+    val viewModel: StoreViewModel = viewModel(
+        factory = ViewModelProvider.AndroidViewModelFactory(context.applicationContext as Application)
+    )
 
     // 뷰모델 데이터 실시간 업데이트
     val currentPoint by viewModel.myTreePoint.collectAsState()
@@ -73,16 +75,19 @@ fun StoreScreen(
      * 처음부터 내비게이션 없이 if - else 문으로 구조 짜다 보니,
      * StoreDetailScreen 에서 안드로이드 시스템 백버튼 누르면
      * 앱이 꺼지는 문제가 생길 수도 있어서
-     * ( OS 입장에선 페이지 하나에만 머물러 있어서 그런 것 같음 )
+     * ( 시스템 입장에선 페이지 하나에만 머물러 있어서 그런 것 같음 )
      * 어쩔 수 없이 백핸들러 사용해서 처리했습니다.
      */
+
+
+
 
     // 선택된 아이템 있으면 StoreDetailScreen 으로 넘어감
     if (selectedItem != null) {
 
         BackHandler {
             selectedItem = null
-        }
+        } // 뒤로가기버튼용 백핸들러
 
         val myBalance = when (selectedItem!!.currencyType) {
             CurrencyType.POINT -> currentPoint
@@ -94,14 +99,17 @@ fun StoreScreen(
 
         StoreDetailScreen(
             item = selectedItem!!,
-            balance = myBalance, // 포인트 대신 열매 개수가 넘어감
+            balance = myBalance,
             onBackClick = { selectedItem = null },
-            // viewModel에 fruits 객체도 같이 넘김
             onBuyClick = { viewModel.buyItem(selectedItem!!, fruits) }
         )
     }
 
-
+    /** 스토어는 ( 구매한 항목 + 잔고 ) 영구저장 필요
+     * -> sharedpreference 사용 -> context 가 필요해서
+     * 일반 viewmodel 말고 androidviewmodel 사용
+     * 생성자 파라미터에 context 넣기 위해 factory 사용했습니다
+     */
 
 
 

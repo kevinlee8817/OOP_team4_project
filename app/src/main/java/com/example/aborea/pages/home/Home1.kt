@@ -17,6 +17,9 @@ import com.example.aborea.pages.home.ui.home.progressBar
 import com.example.aborea.pages.home.ui.home.showTree
 import com.example.aborea.pages.home.ui.home.timerON
 
+import com.example.aborea.pages.store.TimeToTreePointEffect // 이 부분 임포트했습니다 from store
+
+
 @Composable
 fun Home1(navController: NavController) {
     SetBackground()
@@ -25,6 +28,9 @@ fun Home1(navController: NavController) {
             .fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceBetween
     ){
+
+        TimeToTreePointEffect()  // 여기 함수 하나 추가했습니다 from store
+
         //실제 홈화면
         HomeScreen(navController=navController)
 
