@@ -17,7 +17,7 @@ import com.example.aborea.pages.home.ui.home.progressBar
 import com.example.aborea.pages.home.ui.home.showTree
 import com.example.aborea.pages.home.ui.home.timerON
 
-ㅗ
+
 @Composable
 fun Home1(navController: NavController) {
     SetBackground()
