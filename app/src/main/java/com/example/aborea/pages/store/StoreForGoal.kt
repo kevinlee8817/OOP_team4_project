@@ -28,8 +28,6 @@ val myTreeList = getMyTreeList(context)
 이거 추가하시면
 myTreeList 에는 구매한 나무들만 들어있을 겁니다.
 
-이거 추가해서
-
  */
 
 
