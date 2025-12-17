@@ -1,5 +1,3 @@
-// HomeForStore.kt
-
 package com.example.aborea.pages.store
 
 import androidx.compose.runtime.Composable
