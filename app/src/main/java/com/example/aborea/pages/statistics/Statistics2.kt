@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.aborea.common.*
 import com.example.aborea.pages.statistics.compose.*
-
 @Composable
 fun Statistics2(navController: NavController, status: MutableState<Fruits>) {
     SetBackground()
