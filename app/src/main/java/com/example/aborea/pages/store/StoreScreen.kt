@@ -1,5 +1,6 @@
 package com.example.aborea.pages.store
 
+import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,6 +32,8 @@ import com.example.aborea.common.OwnglyphText
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.activity.compose.BackHandler
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModelProvider
 
 import com.example.aborea.pages.statistics.compose.Fruits
 
@@ -42,12 +45,16 @@ val customFont = FontFamily(Font(R.font.ownglyph))
 fun StoreScreen(
     navController: NavController,
     fruits: Fruits,
-    viewModel: StoreViewModel = viewModel()     // 뷰모델 연결
 ) {
 
 
+// ✅ 1. Context(열쇠) 가져오기
+    val context = LocalContext.current
 
-
+    // ✅ 2. 열쇠를 쥐여주면서 뷰모델 생성하기 (Factory 사용)
+    val viewModel: StoreViewModel = viewModel(
+        factory = ViewModelProvider.AndroidViewModelFactory(context.applicationContext as Application)
+    )
 
 
 
