@@ -12,6 +12,7 @@ import com.example.aborea.pages.statistics.compose.Fruits
 
 class StoreViewModel(application: Application) : AndroidViewModel(application) {
 
+
     // StoreStorage (저장소) 연결
     private val storage = StoreStorage(application)
 
@@ -100,9 +101,6 @@ class StoreViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-
-
-
 
 
 
