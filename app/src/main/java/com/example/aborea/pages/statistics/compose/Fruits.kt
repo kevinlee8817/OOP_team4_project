@@ -1,6 +1,5 @@
 package com.example.aborea.pages.statistics.compose
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 
 class Fruits {
@@ -21,6 +20,8 @@ class Fruits {
         for(i in 0 until 4)
             fruitNum.add(0)
         for(i in 0 until 4)
+            timeList.add(3600)
+        for(i in 0 until 4)
             percentage.add(0f)
         for(i in 0 until 4)
             progress.add(0f)
@@ -36,6 +37,7 @@ class Fruits {
             } else {  }
         }
     }
+    //진행바 채우기
     fun getProgress() {
         for(i in 0 until 4) {
             if(timeList[i] <= 18000){

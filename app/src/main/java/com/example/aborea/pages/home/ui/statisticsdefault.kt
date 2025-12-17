@@ -24,6 +24,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import com.example.aborea.common.*
+import com.example.aborea.pages.home.ui.home.StatsBar
+import com.example.aborea.pages.home.viewmodel.HomeViewModel
 
 //날짜 카테고리
 //일 선택시, 버튼 생성 -> 날짜 선택 가능? OR 1일씩 이동
@@ -107,7 +109,8 @@ fun focusForest(){
 }
 //집중 시간 그래프
 @Composable
-fun focusGraph(){
+fun focusGraph(time: HomeViewModel){
+    time.getTimeStats()
     Box(
         modifier = Modifier
             .width(381.dp)
@@ -136,13 +139,16 @@ fun focusGraph(){
                 painter = painterResource(id = R.drawable.graphbase),
                 contentDescription = "graphbase"
             )
+
+            for(i in 0 until 24)
+                StatsBar(time, i)
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun statisticsPreview(){
-    val navController = rememberNavController()
-    statistics(navController = navController)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun statisticsPreview(){
+//    val navController = rememberNavController()
+//    statistics(navController = navController)
+//}

@@ -1,5 +1,6 @@
 package com.example.aborea.pages.home.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
@@ -8,8 +9,27 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.time.LocalDateTime
 
 class HomeViewModel : ViewModel() {
+
+    val time = LocalDateTime.now()
+    val hour = time.hour
+    val timePerHour = mutableStateListOf<Int>()
+    val timeStats = mutableStateListOf<Float>()
+
+    init {
+        for(i in 0 until 25)
+            timePerHour.add(1800)
+    }
+
+    fun getTimeStats() {
+        var count = 0
+        for(i in timePerHour) {
+            timeStats[count] = timePerHour[count] / 3600f
+            count += 1
+        }
+    }
 
     // 총 집중 시간 (초 단위)
     private val _elapsedSeconds = MutableStateFlow(0)
@@ -32,6 +52,7 @@ class HomeViewModel : ViewModel() {
                 delay(1000L)
                 if(_elapsedSeconds.value != 18000){
                     _elapsedSeconds.value += 1
+                    timePerHour[hour] += 1
                 }
                 else{_elapsedSeconds.value = 18000}
             }
@@ -54,6 +75,5 @@ class HomeViewModel : ViewModel() {
         val s = total % 60
         return String.format("%02d : %02d : %02d", h, m, s)
     }
+
 }
-
-
