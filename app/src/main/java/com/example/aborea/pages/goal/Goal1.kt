@@ -21,11 +21,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-// ⭐ FlowRow를 위한 올바른 import
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 
-
-// ==========================================================
+// [추가된 Import]: 구매한 나무 목록을 가져오기 위해 필요
+import androidx.compose.ui.platform.LocalContext
+import com.example.aborea.pages.store.* // ==========================================================
 // 1. 전역 상태 관리 및 목표 데이터 모델 정의 (Goal2.kt와 공유)
 // ==========================================================
 
@@ -89,6 +89,9 @@ fun SelectButton(
 @Composable
 fun NewGoalScreen(navController: NavController) {
 
+    // Context 가져오기
+    val context = LocalContext.current
+
     // 목표 이름 상태 변수
     var goalName by remember { mutableStateOf("") }
     var selectedCategoryId by remember { mutableStateOf(-1) }
@@ -104,18 +107,44 @@ fun NewGoalScreen(navController: NavController) {
         )
     }
 
-    val treeTypes = remember {
-        listOf(
-            SelectionItem(11, "벚꽃나무", "🌸"),
-            SelectionItem(12, "단풍나무", "🍂"),
-            SelectionItem(13, "사과나무", "🍎"),
-            SelectionItem(14, "소나무", "🌲"),
-            SelectionItem(15, "편백나무", "🌳"),
-            SelectionItem(16, "이끼나무", "🍄"),
-            SelectionItem(17, "별나무", "⭐"),
-            SelectionItem(18, "달나무", "🌙")
+    // ******************************************************
+    // [수정된 부분] 구매한 StoreItem 목록을 불러와 SelectionItem 목록으로 변환
+    // ******************************************************
+
+    // 1. 구매한 StoreItem 목록을 불러옵니다. (SharedPreferences 접근)
+    val purchasedStoreItems: List<StoreItem> = remember(context) {
+        getMyTreeList(context)
+    }
+
+    // 2. StoreItem 목록을 Goal1에서 사용하는 SelectionItem 목록으로 변환합니다.
+    val treeTypes: List<SelectionItem> = purchasedStoreItems.map { storeItem ->
+
+        // **요청하신 대로 나무 이름에 따른 이모지 매핑**
+        val emoji = when (storeItem.name) {
+            "흐릿나무" -> "🌫️"
+            "대나무" -> "🎋"
+            "단풍나무" -> "🍁"
+            "참나무" -> "🌳"
+            "별나무" -> "⭐"
+            "벚꽃나무" -> "🌸"
+            "달나무" -> "🌙"
+            "반디나무" -> "✨"
+            "사과나무" -> "🍎"
+            "소나무" -> "🌲"
+            "버드나무" -> "🍃"
+            "자작나무" -> "🍂"
+            else -> "❓"
+        }
+
+        SelectionItem(
+            id = storeItem.id,
+            label = storeItem.name,
+            emoji = emoji // 매핑된 이모지 사용
         )
     }
+
+    // ******************************************************
+    // ******************************************************
 
     Column(
         modifier = Modifier
@@ -124,7 +153,7 @@ fun NewGoalScreen(navController: NavController) {
             .background(Color.White, RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 1. 헤더
+        // 1. 헤더 (유지)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -147,7 +176,7 @@ fun NewGoalScreen(navController: NavController) {
             )
         }
 
-        // 2. 목표 이름 입력
+        // 2. 목표 이름 입력 (유지)
         Text(
             "목표 이름",
             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
@@ -169,7 +198,7 @@ fun NewGoalScreen(navController: NavController) {
             )
         )
 
-        // 3. 카테고리 선택 (2열)
+        // 3. 카테고리 선택 (2열) (유지)
         Text(
             "카테고리 선택",
             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
@@ -210,6 +239,7 @@ fun NewGoalScreen(navController: NavController) {
             horizontalArrangement = Arrangement.Start,
             maxItemsInEachRow = 2
         ) {
+            // 이제 treeTypes는 구매한 나무 목록입니다.
             treeTypes.forEach { item ->
                 Box(
                     modifier = Modifier
@@ -227,7 +257,7 @@ fun NewGoalScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // 5. 목표 생성 버튼
+        // 5. 목표 생성 버튼 (유지)
         Button(
             onClick = {
                 if (goalName.isBlank() || selectedCategoryId == -1 || selectedTreeId == -1) {
@@ -241,6 +271,7 @@ fun NewGoalScreen(navController: NavController) {
                     categoryEmoji = categories.find { it.id == selectedCategoryId }?.emoji ?: "❓",
                     categoryLabel = categories.find { it.id == selectedCategoryId }?.label ?: "기타",
                     name = goalName,
+                    // 선택된 나무 정보는 이제 구매한 목록(treeTypes)에서 정확한 이모지를 가져옵니다.
                     treeEmoji = treeTypes.find { it.id == selectedTreeId }?.emoji ?: "❓",
                     treeName = treeTypes.find { it.id == selectedTreeId }?.label ?: "기타나무",
                     isActive = GoalState.goalList.isEmpty()
@@ -282,4 +313,3 @@ fun Goal1(navController: NavController) {
 fun Goal1Preview() {
     Goal1(rememberNavController())
 }
-
